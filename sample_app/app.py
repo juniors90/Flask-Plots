@@ -1,0 +1,233 @@
+# -*- coding: utf-8 -*-
+import os
+import pathlib
+import sys
+
+from flask import Flask, render_template_string
+import matplotlib
+import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
+import numpy as np
+
+matplotlib.use("Agg")
+
+# this path is pointing to sample_app/
+CURRENT_PATH = pathlib.Path(os.path.abspath(os.path.dirname(__file__)))
+FLASK_PLOTS_PATH = CURRENT_PATH.parent
+
+sys.path.insert(0, str(FLASK_PLOTS_PATH))
+
+from flask_plots import Plots  # noqa
+
+app = Flask(__name__)
+
+plots = Plots(app)
+
+
+@app.route("/hist")
+def hist():
+    # make data
+    np.random.seed(1)
+    x = 4 + np.random.normal(0, 1.5, 200)
+    # Plots
+    ax = plt.subplots()
+    ax = plots.hist(
+        x, hist_kws={"bins": 8, "linewidth": 0.5, "edgecolor": "white"}
+    )
+    ax.set_title("Histogram Chart")
+    ax.set(
+        xlim=(0, 8),
+        xticks=np.arange(1, 8),
+        ylim=(0, 56),
+        yticks=np.linspace(0, 56, 9),
+    )
+    data = plots.get_data(plt.gcf())
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/errorbar")
+def errorbar():
+    # make data
+    np.random.seed(1)
+    x = [2, 4, 6]
+    y = [3.6, 5, 4.2]
+    yerr = [0.9, 1.2, 0.5]
+    # Plot
+    ax = plt.subplots()
+    ax = plots.errorbar(x=x, y=y, errorbar_kws={"yerr": yerr})
+    ax.set_title("Errorbar Chart")
+    ax.errorbar(x, y, yerr, fmt="o", linewidth=2, capsize=6)
+    ax.set(
+        xlim=(0, 8),
+        xticks=np.arange(1, 8),
+        ylim=(0, 8),
+        yticks=np.arange(1, 8),
+    )
+    data = plots.get_data(plt.gcf())
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/violinplot")
+def violinplot():
+    # make data
+    np.random.seed(10)
+    dataset = np.random.normal((3, 5, 4), (0.75, 1.00, 0.75), (200, 3))
+    # plot:
+    fig, ax = plt.subplots()
+    vp = plots.violinplot(
+        dataset=dataset,
+        positions=[2, 4, 6],
+        violinplot_kws={
+            "widths": 2,
+            "showmeans": False,
+            "showmedians": False,
+            "showextrema": False,
+        },
+    )
+    # styling:
+    for body in vp["bodies"]:
+        body.set_alpha(0.9)
+    ax.set(
+        xlim=(0, 8),
+        xticks=np.arange(1, 8),
+        ylim=(0, 8),
+        yticks=np.arange(1, 8),
+    )
+    data = plots.get_data(fig)
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/eventplot")
+def eventplot():
+    # make data:
+    np.random.seed(1)
+    D = np.random.gamma(4, size=(3, 50))
+    # plot:
+    fig, ax = plt.subplots()
+    ax = plots.eventplot(
+        D,
+        eventplot_kws={
+            "orientation": "vertical",
+            "lineoffsets": [2, 4, 6],
+            "linewidth": 0.75,
+        },
+    )
+    ax.set(
+        xlim=(0, 8),
+        xticks=np.arange(1, 8),
+        ylim=(0, 8),
+        yticks=np.arange(1, 8),
+    )
+    data = plots.get_data(fig)
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/boxplot")
+def boxplot():
+    ax = plt.subplots()
+    ax = plots.boxplot(x=[14, 40, 16, 24])
+    ax.set_title("Boxplot Chart")
+    data = plots.get_data(plt.gcf())
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/")
+def index():
+    fig, ax = plt.subplots()
+    ax = plots.scatter_hist(
+        x=np.random.normal(size=100),
+        y=np.random.normal(size=100),
+        hist_kws={"cmap": "inferno"},
+        scatter_kws={"color": "g"},
+    )
+    ax.set_title("Scatter Hist")
+    ax.set_xlabel("Labbel for X!")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        <img src='data:image/png;base64,{{ data }}'>
+        """,
+        data=data,
+    )
+
+
+@app.route("/two-axes")
+def two_axes():
+    fig, axs = plt.subplots(1, 2)
+    fig.set_size_inches(10, 5)
+    ax = plots.scatter_hist(
+        x=np.random.normal(size=100),
+        y=np.random.normal(size=100),
+        ax=axs[1],
+        hist_kws={"cmap": "inferno"},
+        scatter_kws={"color": "g"},
+    )
+    ax.set_title("Scatter Hist")
+    data = plots.get_data(fig)
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/bar")
+def bar():
+    ax = plt.subplots()
+    countries = ["Argentina", "Brasil", "Colombia", "Chile"]
+    peoples = [14, 40, 16, 24]
+    ax = plots.bar(countries, peoples)
+    ax.set_title("Bar Chart")
+    data = plots.get_data(plt.gcf())
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/pie")
+def pie():
+    ax = plt.subplots()
+    ax = plots.pie(
+        x=[14, 40, 16, 24],
+        pie_kws={"labels": ["Argentina", "Brasi", "Colombia", "Chile"]},
+    )
+    ax.set_title("Pie Hist")
+    data = plots.get_data(plt.gcf())
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/hello")
+def hello():
+    # Generate the figure **without using pyplot**.
+    fig, ax = plt.subplots()
+    ax.plot([1, 2])
+    ax.set_title("Linear Function")
+    # Return data from temporary buffer.
+    data = plots.get_data(fig)
+    return f"<img src='data:image/png;base64,{data}'/>"
+
+
+@app.route("/hello2")
+def hello2():
+    # Generate the figure **without using pyplot**.
+    fig = Figure()
+    ax = fig.subplots()
+    ax.plot([-1, 4])
+    ax.set_title("Linear Function 2")
+    # Embed the result in the html output.
+    data = plots.get_data(fig)
+    return f"<img src='data:image/png;base64,{data}'/>"
+
+
+if __name__ == "__main__":
+    app.run(debug=True)

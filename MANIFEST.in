@@ -1,0 +1,14 @@
+include LICENSE
+include README.md
+recursive-include flask_plots *.css
+recursive-include flask_plots *.html
+include CHANGELOG.rst
+
+exclude tox.ini
+exclude .docstr.yaml
+exclude .readthedocs.yaml
+exclude pyproject.toml
+recursive-exclude tests *
+recursive-exclude sample_app *
+recursive-exclude docs *
+recursive-exclude res *
