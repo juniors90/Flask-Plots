@@ -122,11 +122,11 @@ class Plots(object):
         ----------
         dataset : Array or a sequence of vectors.
             The input data.
-        
+
         positions : array-like, default: [1, 2, ..., n]
             The positions of the violins. The ticks and limits are
             automatically set to match the positions.
-        
+
         ax : matplotlib.pyplot.Axis, (optional)
             A matplotlib axis.
 
@@ -203,13 +203,13 @@ class Plots(object):
             The x coordinates of the bars. See also *align* for the
             alignment of the bars to the coordinates.
 
-        bar_height : float or array-like, 
+        bar_height : float or array-like,
             The height(s) of the bars. You can config this value
             using ``app.config["BAR_HEIGHT"]``.
-        
+
         ax : matplotlib.pyplot.Axis, (optional)
             A matplotlib axis.
-        
+
         bar_kws: ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
@@ -232,10 +232,10 @@ class Plots(object):
         ----------
         x : 1D array-like
             The wedge sizes.
-        
+
         ax : matplotlib.pyplot.Axis, (optional)
             A matplotlib axis.
-        
+
         bar_kws: ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
@@ -259,10 +259,10 @@ class Plots(object):
             The input data.  If a 2D array, a boxplot is drawn for each column
             in *x*.  If a sequence of 1D arrays, a boxplot is drawn for each
             array in *x*.
-        
+
         ax : matplotlib.pyplot.Axis, (optional)
             A matplotlib axis.
-        
+
         boxplot_kws: ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
