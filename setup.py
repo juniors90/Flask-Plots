@@ -61,6 +61,13 @@ setup(
     license="The MIT License",
     install_requires=REQUIREMENTS,
     keywords=["Flask", "Matplotlib", "Data Visualisation"],
+    project_urls={
+        # 'Documentation': '',
+        'Source': 'https://github.com/juniors90/Flask-Plots',
+        'Tracker': 'https://github.com/juniors90/Flask-Plots/issues',
+        'Donate': 'https://www.paypal.com/donate?hosted_button_id=LFAQ7E7TJ4HSY',
+        'Funding':'https://paypal.me/juniors90',
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "License :: OSI Approved :: MIT License",
