@@ -28,6 +28,10 @@ from flask import Blueprint, current_app
 import matplotlib.pyplot as plt
 
 
+def raise_helper(message):  # pragma: no cover
+    raise RuntimeError(message)
+
+
 class Plots(object):
     """Base extension class for different Plots versions.
 
@@ -56,6 +60,7 @@ class Plots(object):
         )
         app.register_blueprint(blueprint)
         app.jinja_env.globals["plots"] = self
+        app.jinja_env.globals["raise"] = raise_helper
         app.jinja_env.add_extension("jinja2.ext.do")
 
     def get_data(self, fig, format="png"):

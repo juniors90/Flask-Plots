@@ -271,7 +271,13 @@ def hello2():
     ax.set_title("Linear Function 2")
     # Embed the result in the html output.
     data = plots.get_data(fig)
-    return f"<img src='data:image/png;base64,{data}'/>"
+    return render_template_string(
+        """{% from 'plots/utils.html' import render_img %}
+        <img src='data:image/png;base64,{{data}}' alt='some_img1'/>
+        {{ render_img(data=data, alt_img='some_img2') }}
+        """,
+        data=data,
+    )
 
 
 if __name__ == "__main__":
