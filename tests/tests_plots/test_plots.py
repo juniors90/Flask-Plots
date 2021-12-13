@@ -15,7 +15,7 @@
 
 
 from flask import current_app
-import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 
 import pytest as pt
 
@@ -29,6 +29,8 @@ class TestPlots:
         assert "plots_ui" not in extensions
 
     def test_get_data(self, plots):
-        ax = plt.subplots()  # noqa
-        data = plots.get_data(plt.gcf())
+        fig = Figure()
+        ax = fig.subplots()  # noqa
+        ax.plot([1, 2])
+        data = plots.get_data(fig)
         assert data is not None

@@ -5,7 +5,6 @@ import sys
 
 from flask import Flask, render_template_string
 import matplotlib
-import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 import numpy as np
 
@@ -24,15 +23,41 @@ app = Flask(__name__)
 plots = Plots(app)
 
 
+@app.route("/")
+def index():
+    fig = Figure()
+    ax = fig.subplots()
+    ax = plots.scatter_hist2d(
+        fig,
+        x=np.random.normal(size=100),
+        y=np.random.normal(size=100),
+        hist_kws={"cmap": "inferno"},
+        scatter_kws={"color": "g"},
+    )
+    ax.set_title("Scatter Hist")
+    ax.set_xlabel("Labbel for X!")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        <img src='data:image/png;base64,{{ data }}'>
+        """,
+        data=data,
+    )
+
+
 @app.route("/hist")
 def hist():
     # make data
     np.random.seed(1)
     x = 4 + np.random.normal(0, 1.5, 200)
     # Plots
-    ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     ax = plots.hist(
-        x, hist_kws={"bins": 8, "linewidth": 0.5, "edgecolor": "white"}
+        fig,
+        x,
+        ax,
+        hist_kws={"bins": 8, "linewidth": 0.5, "edgecolor": "white"},
     )
     ax.set(
         xlim=(0, 8),
@@ -41,7 +66,7 @@ def hist():
         yticks=np.linspace(0, 56, 9),
     )
     ax.set_title("Histogram Chart")
-    data = plots.get_data(plt.gcf())
+    data = plots.get_data(fig)
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
     )
@@ -53,8 +78,10 @@ def boxplot():
     np.random.seed(10)
     D = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
     # plot
-    ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     ax = plots.boxplot(
+        fig,
         D,
         boxplot_kws={
             "positions": [2, 4, 6],
@@ -79,7 +106,7 @@ def boxplot():
         yticks=np.arange(1, 8),
     )
     ax.set_title("Boxplot Chart")
-    data = plots.get_data(plt.gcf())
+    data = plots.get_data(fig)
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
     )
@@ -93,8 +120,10 @@ def errorbar():
     y = [3.6, 5, 4.2]
     yerr = [0.9, 1.2, 0.5]
     # Plot
-    ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     ax = plots.errorbar(
+        fig,
         x=x,
         y=y,
         errorbar_kws={"yerr": yerr, "fmt": "o", "linewidth": 2, "capsize": 6},
@@ -106,7 +135,7 @@ def errorbar():
         yticks=np.arange(1, 8),
     )
     ax.set_title("Errorbar Chart")
-    data = plots.get_data(plt.gcf())
+    data = plots.get_data(fig)
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
     )
@@ -118,8 +147,10 @@ def violinplot():
     np.random.seed(10)
     dataset = np.random.normal((3, 5, 4), (0.75, 1.00, 0.75), (200, 3))
     # plot:
-    fig, ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     vp = plots.violinplot(
+        fig,
         dataset=dataset,
         positions=[2, 4, 6],
         violinplot_kws={
@@ -152,8 +183,10 @@ def eventplot():
     x = [2, 4, 6]
     D = np.random.gamma(4, size=(3, 50))
     # plot:
-    fig, ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     ax = plots.eventplot(
+        fig,
         D,
         eventplot_kws={
             "orientation": "vertical",
@@ -174,31 +207,13 @@ def eventplot():
     )
 
 
-@app.route("/")
-def index():
-    fig, ax = plt.subplots()
-    ax = plots.scatter_hist2d(
-        x=np.random.normal(size=100),
-        y=np.random.normal(size=100),
-        hist_kws={"cmap": "inferno"},
-        scatter_kws={"color": "g"},
-    )
-    ax.set_title("Scatter Hist")
-    ax.set_xlabel("Labbel for X!")
-    data = plots.get_data(fig)
-    return render_template_string(
-        """
-        <img src='data:image/png;base64,{{ data }}'>
-        """,
-        data=data,
-    )
-
-
 @app.route("/two-axes")
 def two_axes():
-    fig, axs = plt.subplots(1, 2)
+    fig = Figure()
     fig.set_size_inches(10, 5)
+    axs = fig.subplots(1, 2)
     ax = plots.scatter_hist2d(
+        fig,
         x=np.random.normal(size=100),
         y=np.random.normal(size=100),
         ax=axs[1],
@@ -214,12 +229,13 @@ def two_axes():
 
 @app.route("/bar")
 def bar():
-    ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     countries = ["Argentina", "Brasil", "Colombia", "Chile"]
     peoples = [14, 40, 16, 24]
-    ax = plots.bar(countries, peoples)
+    ax = plots.bar(fig, countries, peoples)
     ax.set_title("Bar Chart")
-    data = plots.get_data(plt.gcf())
+    data = plots.get_data(fig)
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
     )
@@ -227,8 +243,10 @@ def bar():
 
 @app.route("/pie")
 def pie():
-    ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     ax = plots.pie(
+        fig,
         x=[14, 40, 16, 24],
         pie_kws={
             "labels": ["Argentina", "Brasil", "Colombia", "Chile"],
@@ -245,7 +263,7 @@ def pie():
         yticks=np.arange(1, 8),
     )
     ax.set_title("Pie Chart")
-    data = plots.get_data(plt.gcf())
+    data = plots.get_data(fig)
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
     )
@@ -254,7 +272,8 @@ def pie():
 @app.route("/hello")
 def hello():
     # Generate the figure **without using pyplot**.
-    fig, ax = plt.subplots()
+    fig = Figure()
+    ax = fig.subplots()
     ax.plot([1, 2])
     ax.set_title("Linear Function")
     # Return data from temporary buffer.

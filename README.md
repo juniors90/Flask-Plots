@@ -9,3 +9,5 @@
 [![Issues](https://img.shields.io/github/issues/juniors90/Flask-Plots)](https://github.com/juniors90/Flask-Plots/issues)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
+Flask-Plots is a library for creating and rendering static visualizations using [Matplotlib](https://matplotlib.org/stable/index.html) in Python.
+

@@ -25,7 +25,7 @@ class TestPlots:
     def test_scatter_hist2d(self, app, plots, fig_test, fig_ref):
         test_ax = fig_test.subplots()
         with app.app_context():
-            plots.scatter_hist2d(x=self.x, y=self.y, ax=test_ax)
+            plots.scatter_hist2d(fig=fig_test, x=self.x, y=self.y, ax=test_ax)
 
         exp_ax = fig_ref.subplots()
         exp_ax.hist2d(x=self.x, y=self.y, cmap="Greys")
@@ -40,6 +40,7 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.hist(
+                fig=fig_test,
                 x=z,
                 ax=test_ax,
                 hist_kws={"bins": 8, "linewidth": 0.5, "edgecolor": "white"},
@@ -73,6 +74,7 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.boxplot(
+                fig=fig_test,
                 x=D,
                 ax=test_ax,
                 boxplot_kws={
@@ -136,6 +138,7 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.errorbar(
+                fig=fig_test,
                 x=x,
                 y=y,
                 ax=test_ax,
@@ -174,6 +177,7 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             vp = plots.violinplot(
+                fig=fig_test,
                 dataset=dataset,
                 positions=[2, 4, 6],
                 ax=test_ax,
@@ -225,7 +229,8 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.eventplot(
-                D,
+                fig=fig_test,
+                positions=D,
                 ax=test_ax,
                 eventplot_kws={
                     "orientation": "vertical",
@@ -259,6 +264,7 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.pie(
+                fig=fig_test,
                 x=[14, 40, 16, 24],
                 ax=test_ax,
                 pie_kws={
@@ -304,6 +310,7 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.bar(
+                fig_test,
                 x,
                 y,
                 ax=test_ax,
@@ -337,6 +344,7 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.scatter_hexbin(
+                fig=fig_test,
                 x=x,
                 y=y,
                 ax=test_ax,

@@ -1,3 +1,9 @@
+## This file was part of docstr-cov-workflow and was modified under the terms of
+## its MIT License. Copyright (c) 2021 Ezequiel Pássaro. All rights reserved.
+## Full text: https://github.com/epassaro/docstr-cov-workflow/blob/main/LICENSE
+## Links:
+##  - https://dev.to/epassaro/how-to-keep-track-of-docstring-coverage-of-python-packages-on-ci-41fc
+
 # Log in to jsonbin.org with yout GitHub account to get an API key and 
 # store it as a repository secret.
 
