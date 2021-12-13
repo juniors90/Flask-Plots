@@ -359,3 +359,82 @@ class TestPlots:
         exp_ax.scatter(x, y, color="g")
         exp_ax.set(xlim=(-2, 2), ylim=(-3, 3))
         exp_ax.set_title("Scatter Hexbin Chart")
+
+    @check_figures_equal(extensions=["png"])
+    def test_quiver(self, app, plots, fig_test, fig_ref):
+        # make data:
+        x = np.linspace(-4, 4, 6)
+        y = np.linspace(-4, 4, 6)
+        X, Y = np.meshgrid(x, y)
+        U = X + Y
+        V = Y - X
+        # test plot:
+        test_ax = fig_test.subplots()
+        with app.app_context():
+            plots.quiver(
+                fig=fig_test,
+                X=X,
+                Y=Y,
+                U=U,
+                V=V,
+                ax=test_ax,
+                quiver_kws={
+                    "color": "C0",
+                    "angles": "xy",
+                    "scale_units": "xy",
+                    "scale": 5,
+                    "width": 0.015,
+                },
+            )
+        test_ax.set(xlim=(-5, 5), ylim=(-5, 5))
+        test_ax.set_title("Quiver Chart")
+        # plot
+        exp_ax = fig_ref.subplots()
+        exp_ax.quiver(X, Y, U, V, color="C0", angles='xy', scale_units='xy', scale=5, width=.015)
+        exp_ax.set(xlim=(-5, 5), ylim=(-5, 5))
+        exp_ax.set_title("Quiver Chart")
+
+    @check_figures_equal(extensions=["png"])
+    def test_streamplot(self, app, plots, fig_test, fig_ref):
+        # make a stream function:
+        X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+        Z = (1 - X/2 + X**5 + Y**3) * np.exp(-X**2 - Y**2)
+        # make U and V out of the streamfunction:
+        V = np.diff(Z[1:, :], axis=1)
+        U = -np.diff(Z[:, 1:], axis=0)
+        # test plot:
+        test_ax = fig_test.subplots()
+        with app.app_context():
+            plots.streamplot(
+                fig=fig_test,
+                X=X[1:, 1:],
+                Y=Y[1:, 1:],
+                U=U,
+                V=V)
+        test_ax.set_title("Streamplot Chart")
+        # expected plot:
+        exp_ax = fig_ref.subplots()
+        exp_ax.streamplot(X[1:, 1:], Y[1:, 1:], U, V)
+        exp_ax.set_title("Streamplot Chart")
+
+    @check_figures_equal(extensions=["png"])
+    def test_contourf(self, app, plots, fig_test, fig_ref):
+        # make data
+        X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+        Z = (1 - X/2 + X**5 + Y**3) * np.exp(-X**2 - Y**2)
+        levels = np.linspace(Z.min(), Z.max(), 7)
+
+        # test plot:
+        test_ax = fig_test.subplots()
+        with app.app_context():
+            plots.contourf(
+                fig=fig_test,
+                X=X,
+                Y=Y,
+                Z=Z,
+                levels=levels)
+        test_ax.set_title("Streamplot Chart")
+        # expected plot:
+        exp_ax = fig_ref.subplots()
+        exp_ax.contourf(X, Y, Z, levels=levels)
+        exp_ax.set_title("Streamplot Chart")

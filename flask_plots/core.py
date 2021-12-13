@@ -306,3 +306,21 @@ class Plots(object):
         boxplot_kws = {} if boxplot_kws is None else boxplot_kws
         ax.boxplot(x, **boxplot_kws)
         return ax
+
+    def quiver(self, fig, X, Y, U, V, ax=None, quiver_kws=None):
+        ax = fig.gca() if ax is None else ax
+        quiver_kws = {} if quiver_kws is None else quiver_kws
+        ax.quiver(X, Y, U, V, **quiver_kws)
+        return ax
+
+    def streamplot(self, fig, X, Y, U, V, ax=None, streamplot_kws=None):
+        ax = fig.gca() if ax is None else ax
+        streamplot_kws = {} if streamplot_kws is None else streamplot_kws
+        ax.streamplot(X, Y, U, V, **streamplot_kws)
+        return ax
+
+    def contourf(self, fig, X, Y, Z, levels, ax=None, contourf_kws=None):
+        ax = fig.gca() if ax is None else ax
+        contourf_kws = {} if contourf_kws is None else contourf_kws
+        ax.contourf(X, Y, Z, levels, **contourf_kws)
+        return ax

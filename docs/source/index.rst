@@ -26,6 +26,7 @@ Welcome to Flask-Plots's documentation!
         height="1"
       />
     </form>
+    <a href="https://www.paypal.com/donate/?hosted_button_id=LFAQ7E7TJ4HSY" link="_blank">Donate</a>
 
 .. toctree::
    :maxdepth: 3
