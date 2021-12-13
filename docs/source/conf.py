@@ -88,3 +88,8 @@ autodoc_default_options = {
 add_module_names = False
 
 master_doc = 'index'
+
+
+html_additional_pages = {
+    'donate': 'customdonate.html',
+}

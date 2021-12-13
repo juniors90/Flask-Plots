@@ -12,3 +12,4 @@ recursive-exclude tests *
 recursive-exclude sample_app *
 recursive-exclude docs *
 recursive-exclude res *
+recursive-exclude result_images *

@@ -34,13 +34,51 @@ def hist():
     ax = plots.hist(
         x, hist_kws={"bins": 8, "linewidth": 0.5, "edgecolor": "white"}
     )
-    ax.set_title("Histogram Chart")
     ax.set(
         xlim=(0, 8),
         xticks=np.arange(1, 8),
         ylim=(0, 56),
         yticks=np.linspace(0, 56, 9),
     )
+    ax.set_title("Histogram Chart")
+    data = plots.get_data(plt.gcf())
+    return render_template_string(
+        "<img src='data:image/png;base64,{{ data }}'>", data=data
+    )
+
+
+@app.route("/boxplot")
+def boxplot():
+    # make data:
+    np.random.seed(10)
+    D = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
+    # plot
+    ax = plt.subplots()
+    ax = plots.boxplot(
+        D,
+        boxplot_kws={
+            "positions": [2, 4, 6],
+            "widths": 1.5,
+            "patch_artist": True,
+            "showmeans": False,
+            "showfliers": False,
+            "medianprops": {"color": "white", "linewidth": 0.5},
+            "boxprops": {
+                "facecolor": "C0",
+                "edgecolor": "white",
+                "linewidth": 0.5,
+            },
+            "whiskerprops": {"color": "C0", "linewidth": 1.5},
+            "capprops": {"color": "C0", "linewidth": 1.5},
+        },
+    )
+    ax.set(
+        xlim=(0, 8),
+        xticks=np.arange(1, 8),
+        ylim=(0, 8),
+        yticks=np.arange(1, 8),
+    )
+    ax.set_title("Boxplot Chart")
     data = plots.get_data(plt.gcf())
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
@@ -56,15 +94,18 @@ def errorbar():
     yerr = [0.9, 1.2, 0.5]
     # Plot
     ax = plt.subplots()
-    ax = plots.errorbar(x=x, y=y, errorbar_kws={"yerr": yerr})
-    ax.set_title("Errorbar Chart")
-    ax.errorbar(x, y, yerr, fmt="o", linewidth=2, capsize=6)
+    ax = plots.errorbar(
+        x=x,
+        y=y,
+        errorbar_kws={"yerr": yerr, "fmt": "o", "linewidth": 2, "capsize": 6},
+    )
     ax.set(
         xlim=(0, 8),
         xticks=np.arange(1, 8),
         ylim=(0, 8),
         yticks=np.arange(1, 8),
     )
+    ax.set_title("Errorbar Chart")
     data = plots.get_data(plt.gcf())
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
@@ -97,6 +138,7 @@ def violinplot():
         ylim=(0, 8),
         yticks=np.arange(1, 8),
     )
+    ax.set_title("Violin Chart")
     data = plots.get_data(fig)
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
@@ -107,6 +149,7 @@ def violinplot():
 def eventplot():
     # make data:
     np.random.seed(1)
+    x = [2, 4, 6]
     D = np.random.gamma(4, size=(3, 50))
     # plot:
     fig, ax = plt.subplots()
@@ -114,7 +157,7 @@ def eventplot():
         D,
         eventplot_kws={
             "orientation": "vertical",
-            "lineoffsets": [2, 4, 6],
+            "lineoffsets": x,
             "linewidth": 0.75,
         },
     )
@@ -124,18 +167,8 @@ def eventplot():
         ylim=(0, 8),
         yticks=np.arange(1, 8),
     )
+    ax.set_title("Event Chart")
     data = plots.get_data(fig)
-    return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
-    )
-
-
-@app.route("/boxplot")
-def boxplot():
-    ax = plt.subplots()
-    ax = plots.boxplot(x=[14, 40, 16, 24])
-    ax.set_title("Boxplot Chart")
-    data = plots.get_data(plt.gcf())
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data
     )
@@ -144,7 +177,7 @@ def boxplot():
 @app.route("/")
 def index():
     fig, ax = plt.subplots()
-    ax = plots.scatter_hist(
+    ax = plots.scatter_hist2d(
         x=np.random.normal(size=100),
         y=np.random.normal(size=100),
         hist_kws={"cmap": "inferno"},
@@ -165,7 +198,7 @@ def index():
 def two_axes():
     fig, axs = plt.subplots(1, 2)
     fig.set_size_inches(10, 5)
-    ax = plots.scatter_hist(
+    ax = plots.scatter_hist2d(
         x=np.random.normal(size=100),
         y=np.random.normal(size=100),
         ax=axs[1],
@@ -197,9 +230,21 @@ def pie():
     ax = plt.subplots()
     ax = plots.pie(
         x=[14, 40, 16, 24],
-        pie_kws={"labels": ["Argentina", "Brasi", "Colombia", "Chile"]},
+        pie_kws={
+            "labels": ["Argentina", "Brasil", "Colombia", "Chile"],
+            "radius": 3,
+            "center": (4, 4),
+            "wedgeprops": {"linewidth": 1, "edgecolor": "white"},
+            "frame": True,
+        },
     )
-    ax.set_title("Pie Hist")
+    ax.set(
+        xlim=(0, 8),
+        xticks=np.arange(1, 8),
+        ylim=(0, 8),
+        yticks=np.arange(1, 8),
+    )
+    ax.set_title("Pie Chart")
     data = plots.get_data(plt.gcf())
     return render_template_string(
         "<img src='data:image/png;base64,{{ data }}'>", data=data

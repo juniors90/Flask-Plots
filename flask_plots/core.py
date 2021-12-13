@@ -24,7 +24,7 @@ Implementation of Matplotlib in Flask.
 
 import io
 import base64
-from flask import Blueprint
+from flask import Blueprint, current_app
 import matplotlib.pyplot as plt
 
 
@@ -34,17 +34,19 @@ class Plots(object):
     .. versionadded:: 0.0.1
     """
 
-    def __init__(self, app=None) -> None:
+    static_folder = "plots"
+
+    def __init__(self, app=None):
         if app is not None:
             self.init_app(app)
 
     def init_app(self, app):
-        self.cmap = app.config.setdefault("PLOTS_CMAP", "Greys")
-        self.static_folder = app.config.setdefault("STATIC_FOLDER", "plots")
-        self.bar_height = app.config.setdefault("BAR_HEIGHT", 50)
-
-        if not hasattr(app, "extensions"):
-            app.extensions = {}
+        app.config.setdefault("PLOTS_CMAP", "Greys")
+        app.config.setdefault("STATIC_FOLDER", "plots")
+        app.config.setdefault("BAR_HEIGHT", 50)
+        if not hasattr(app, "extensions"): 
+            app.extensions = {} 
+        app.extensions["plots"] = self
         blueprint = Blueprint(
             "plots",
             __name__,
@@ -53,7 +55,7 @@ class Plots(object):
             template_folder="templates",
         )
         app.register_blueprint(blueprint)
-        app.jinja_env.globals["semantic"] = self
+        app.jinja_env.globals["plots"] = self
         app.jinja_env.add_extension("jinja2.ext.do")
 
     def get_data(self, fig, format="png"):
@@ -176,11 +178,11 @@ class Plots(object):
         ax.eventplot(positions, **eventplot_kws)
         return ax
 
-    def scatter_hist(self, x, y, ax=None, hist_kws=None, scatter_kws=None):
+    def scatter_hist2d(self, x, y, ax=None, hist_kws=None, scatter_kws=None):
         ax = plt.gca() if ax is None else ax
         hist_kws = {} if hist_kws is None else hist_kws
         scatter_kws = {} if scatter_kws is None else scatter_kws
-        hist_kws.setdefault("cmap", self.cmap)
+        hist_kws.setdefault("cmap", current_app.config["PLOTS_CMAP"])
         ax.hist2d(x, y, **hist_kws)
         ax.scatter(x, y, **scatter_kws)
         return ax
@@ -189,7 +191,7 @@ class Plots(object):
         ax = plt.gca() if ax is None else ax
         hexbin_kws = {} if hexbin_kws is None else hexbin_kws
         scatter_kws = {} if scatter_kws is None else scatter_kws
-        hexbin_kws.setdefault("cmap", self.cmap)
+        hexbin_kws.setdefault("cmap", current_app.config["PLOTS_CMAP"])
         ax.hexbin(x, y, **hexbin_kws)
         ax.scatter(x, y, **scatter_kws)
         return ax
@@ -221,7 +223,11 @@ class Plots(object):
         """
         ax = plt.gca() if ax is None else ax
         bar_kws = {} if bar_kws is None else bar_kws
-        bar_height = self.bar_height if bar_height is None else bar_height
+        bar_height = (
+            current_app.config["BAR_HEIGHT"]
+            if bar_height is None
+            else bar_height
+        )
         ax.bar(x, bar_height, **bar_kws)
         return ax
 
