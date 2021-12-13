@@ -44,8 +44,8 @@ class Plots(object):
         app.config.setdefault("PLOTS_CMAP", "Greys")
         app.config.setdefault("STATIC_FOLDER", "plots")
         app.config.setdefault("BAR_HEIGHT", 50)
-        if not hasattr(app, "extensions"): 
-            app.extensions = {} 
+        if not hasattr(app, "extensions"):
+            app.extensions = {}
         app.extensions["plots"] = self
         blueprint = Blueprint(
             "plots",
