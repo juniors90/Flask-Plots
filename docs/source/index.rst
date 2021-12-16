@@ -32,7 +32,11 @@ Welcome to Flask-Plots's documentation!
    :maxdepth: 3
    :caption: Contents:
 
+   notes/quickstart
+   notes/tutorial
+   notes/macros
    notes/changelog
+   
    modules/modules
 
 

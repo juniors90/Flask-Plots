@@ -433,8 +433,8 @@ class TestPlots:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.contourf(fig=fig_test, X=X, Y=Y, Z=Z, levels=levels)
-        test_ax.set_title("Streamplot Chart")
+        test_ax.set_title("Contourf Chart")
         # expected plot:
         exp_ax = fig_ref.subplots()
         exp_ax.contourf(X, Y, Z, levels=levels)
-        exp_ax.set_title("Streamplot Chart")
+        exp_ax.set_title("Contourf Chart")

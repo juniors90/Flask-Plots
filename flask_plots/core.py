@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
+# This docstring was part of Matplotlib. All rights reserved.
+# Full Text:
+#    https://matplotlib.org/stable/users/project/license.html
+#
 # This file is part of the
 #   Flask-Plots Project https://github.com/juniors90/Flask-Plots/
 #
@@ -8,7 +12,7 @@
 #       License: MIT
 # Full Text:
 #       https://github.com/juniors90/Flask-Plots/blob/master/LICENSE
-
+#
 # =============================================================================
 # DOCS
 # =============================================================================
@@ -69,15 +73,15 @@ class Plots(object):
 
         Parameters
         ----------
-        fig: matplotlib.Figure
+        fig : matplotlib.Figure
             A instance of Figure Object.
+
         format: str, default: "png"
             A extension type for the images.
+
         decode: str, default: "ascii"
             A buffer decode.
-
         """
-        # Save it to a temporary buffer.
         buf = io.BytesIO()
         fig.savefig(buf, format=format)
         data = base64.b64encode(buf.getbuffer()).decode(decode)
@@ -96,7 +100,7 @@ class Plots(object):
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        hist_kwargs: ``dict`` or ``None`` (optional)
+        hist_kwargs : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
 
@@ -138,7 +142,7 @@ class Plots(object):
     def violinplot(
         self, fig, dataset, positions, ax=None, violinplot_kws=None
     ):
-        """Make a violin plot. using Matlotlib.
+        """Make a violin plot using Matlotlib.
 
         Parameters
         ----------
@@ -152,7 +156,7 @@ class Plots(object):
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        violinplot_kws: ``dict`` or ``None`` (optional)
+        violinplot_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
 
@@ -225,6 +229,9 @@ class Plots(object):
 
         Parameters
         ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
         x : float or array-like
             The x coordinates of the bars. See also *align* for the
             alignment of the bars to the coordinates.
@@ -236,7 +243,7 @@ class Plots(object):
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        bar_kws: ``dict`` or ``None`` (optional)
+        bar_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
             Only ``label`` and ``color`` can't be provided.
 
@@ -260,6 +267,9 @@ class Plots(object):
 
         Parameters
         ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
         x : 1D array-like
             The wedge sizes.
 
@@ -285,6 +295,9 @@ class Plots(object):
 
         Parameters
         ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
         x : Array or a sequence of vectors.
             The input data.  If a 2D array, a boxplot is drawn for each column
             in *x*.  If a sequence of 1D arrays, a boxplot is drawn for each
@@ -308,18 +321,122 @@ class Plots(object):
         return ax
 
     def quiver(self, fig, X, Y, U, V, ax=None, quiver_kws=None):
+        """
+        Plot a 2D field of arrows using matplotlib.
+
+        Parameters
+        ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
+        X, Y : 1D or 2D array-like, optional
+            The x and y coordinates of the arrow locations.
+            If not given, they will be generated as a uniform integer meshgrid
+            based on the dimensions of *U* and *V*.
+            If *X* and *Y* are 1D but *U*, *V* are 2D, *X*, *Y* are expanded
+            to 2D using ``X, Y = np.meshgrid(X, Y)``. In this case ``len(X)``
+            and ``len(Y)`` must match the column and row dimensions of
+            *U* and *V*.
+        U, V : 1D or 2D array-like
+            The x and y direction components of the arrow vectors.
+            They must have the same number of elements, matching the
+            number of arrow locations. *U* and *V* may be masked. Only
+            locations unmasked in *U*, *V*, and *C* will be drawn.
+        ax : matplotlib.Figure.Axis, (optional)
+            A matplotlib axis.
+
+        quiver_kws : ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot.
+            Only ``label`` and ``color`` can't be provided.
+
+        Returns
+        -------
+        ax : matplotlib.Figure.Axis
+            A matplotlib axis.
+        """
         ax = fig.gca() if ax is None else ax
         quiver_kws = {} if quiver_kws is None else quiver_kws
         ax.quiver(X, Y, U, V, **quiver_kws)
         return ax
 
     def streamplot(self, fig, X, Y, U, V, ax=None, streamplot_kws=None):
+        """
+        Draw streamlines of a vector flow using matplotlib.
+
+        Parameters
+        ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
+        x, y : 1D/2D arrays
+            Evenly spaced strictly increasing arrays to make a grid.
+            If 2D, all rows of *x* must be equal and all columns of
+            *y* must be equal; i.e., they must be as if generated
+            by ``np.meshgrid(x_1d, y_1d)``.
+
+        u, v : 2D arrays
+            *x* and *y*-velocities. The number of rows and columns
+            must match the length of *y* and *x*, respectively.
+
+        ax : matplotlib.Figure.Axis, (optional)
+            A matplotlib axis.
+
+        streamplot_kws: ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot.
+            Only ``label`` and ``color`` can't be provided.
+        """
         ax = fig.gca() if ax is None else ax
         streamplot_kws = {} if streamplot_kws is None else streamplot_kws
         ax.streamplot(X, Y, U, V, **streamplot_kws)
         return ax
 
     def contourf(self, fig, X, Y, Z, levels, ax=None, contourf_kws=None):
+        """
+        Plot contour lines using matplotlib.
+
+        Parameters
+        ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
+        X, Y : array-like, optional
+            The coordinates of the values in *Z*.
+
+            *X* and *Y* must both be 2D with the same shape as *Z* (e.g.
+            created via `numpy.meshgrid`), or they must both be 1-D such
+            that ``len(X) == N`` is the number of columns in *Z* and
+            ``len(Y) == M`` is the number of rows in *Z*.
+
+            *X* and *Y* must both be ordered monotonically.
+
+            If not given, they are assumed to be integer indices, i.e.
+            ``X = range(N)``, ``Y = range(M)``.
+
+        M, N : array-like
+            The height values over which the contour is drawn.
+
+        levels : int or array-like, optional
+            Determines the number and positions of the contour lines / regions.
+
+            If an int *n*, use `~matplotlib.ticker.MaxNLocator`, which tries
+            to automatically choose no more than *n+1* "nice" contour levels
+            between *vmin* and *vmax*.
+
+            If array-like, draw contour lines at the specified levels.
+            The values must be in increasing order.
+
+        ax : matplotlib.Figure.Axis, (optional)
+            A matplotlib axis.
+
+        contourf_kws: ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot.
+            Only ``label`` and ``color`` can't be provided.
+
+        Returns
+        -------
+        ax : matplotlib.Figure.Axis
+            A matplotlib axis.
+        """
         ax = fig.gca() if ax is None else ax
         contourf_kws = {} if contourf_kws is None else contourf_kws
         ax.contourf(X, Y, Z, levels, **contourf_kws)
