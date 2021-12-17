@@ -324,30 +324,6 @@ def eventplot():
     )
 
 
-@app.route("/two-axes")
-def two_axes():
-    fig = Figure()
-    fig.set_size_inches(10, 5)
-    axs = fig.subplots(1, 2)
-    ax = plots.scatter_hist2d(
-        fig,
-        x=np.random.normal(size=100),
-        y=np.random.normal(size=100),
-        ax=axs[1],
-        hist_kws={"cmap": "inferno"},
-        scatter_kws={"color": "g"},
-    )
-    ax.set_title("Scatter Hist")
-    data = plots.get_data(fig)
-    return render_template_string(
-        """
-        {% from 'plots/utils.html' import render_img %}
-        {{ render_img(data=data, alt_img='my_img') }}
-        """,
-        data=data,
-    )
-
-
 @app.route("/pie")
 def pie():
     fig = Figure()
@@ -456,19 +432,29 @@ def hello():
     )
 
 
-@app.route("/hello2")
-def hello2():
-    # Generate the figure **without using pyplot**.
+@app.route("/two-axes")
+def two_axes():
     fig = Figure()
-    ax = fig.subplots()
-    ax.plot([-1, 4])
-    ax.set_title("Linear Function 2")
-    # Embed the result in the html output.
+    fig.set_size_inches(10, 5)
+    axs = fig.subplots(1, 2)
+    # Plot 1:
+    axs[0].plot([-1, 4])
+    axs[0].set_title("Linear Function")
+    # Plot 2:
+    axs[1] = plots.scatter_hist2d(
+        fig,
+        x=np.random.normal(size=100),
+        y=np.random.normal(size=100),
+        ax=axs[1],
+        hist2d_kws={"cmap": "inferno"},
+        scatter_kws={"color": "g"},
+    )
+    axs[1].set_title("Scatter Hist")
     data = plots.get_data(fig)
     return render_template_string(
-        """{% from 'plots/utils.html' import render_img %}
-        <img src='data:image/png;base64,{{data}}' alt='some_img1'/>
-        {{ render_img(data=data, alt_img='some_img2') }}
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
         """,
         data=data,
     )

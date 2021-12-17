@@ -1,5 +1,5 @@
-How to embed in a web application server?
-=========================================
+Tutorial: How to embed in a web application server?
+===================================================
 
 .. important::
     
@@ -59,7 +59,13 @@ To install Flask-Plots we will write the following command in the terminal:
     
     (venv) $ pip install Flask-Plots
 
-Create a app.py file such tah conatin the followin sript:
+One way to have the latest developments is by running:
+
+.. code-block:: bash
+    
+    (venv) $ pip install git+https://github.com/juniors90/Flask-Plots.git
+
+Create a ``app.py`` file such tah conatin the followin script:
 
 .. code-block:: python
     :emphasize-lines: 2, 8
@@ -454,5 +460,37 @@ Statistics
                 data=data,
             )
 
+Support for two axes
+--------------------
+
+.. code-block:: python
+    :emphasize-lines: 6-16, 24, 27-28
+
+    @app.route("/two-axes")
+    def two_axes():
+        fig = Figure()
+        fig.set_size_inches(10, 5)
+        axs = fig.subplots(1, 2)
+        # Plot 1: 
+        axs[0].plot([-1, 4])
+        axs[0].set_title("Linear Function")
+        # Plot 2:
+        axs[1] = plots.scatter_hist2d(
+            fig,
+            x=np.random.normal(size=100),
+            y=np.random.normal(size=100),
+            ax=axs[1],
+            hist2d_kws={"cmap": "inferno"},
+            scatter_kws={"color": "g"},
+        )
+        axs[1].set_title("Scatter Hist")
+        data = plots.get_data(fig)
+        return render_template_string(
+            """
+            {% from 'plots/utils.html' import render_img %}
+            {{ render_img(data=data, alt_img='my_img') }}
+            """,
+            data=data,
+        )
 
 .. _Matplotlib: https://matplotlib.org/devdocs/index.html
