@@ -31,6 +31,7 @@ import base64
 from flask import Blueprint, current_app
 
 
+# docstr-coverage:excused `raise helper for jinja template`
 def raise_helper(message):  # pragma: no cover
     raise RuntimeError(message)
 

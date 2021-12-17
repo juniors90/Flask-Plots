@@ -23,8 +23,27 @@ app = Flask(__name__)
 plots = Plots(app)
 
 
+# routes
 @app.route("/")
-def index():
+def bar():
+    fig = Figure()
+    ax = fig.subplots()
+    countries = ["Argentina", "Brasil", "Colombia", "Chile"]
+    peoples = [14, 40, 16, 24]
+    ax = plots.bar(fig, countries, peoples)
+    ax.set_title("Bar Chart")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
+    )
+
+
+@app.route("/scatter-hist2d")
+def scatter_hist2d():
     fig = Figure()
     ax = fig.subplots()
     ax = plots.scatter_hist2d(
@@ -319,24 +338,6 @@ def two_axes():
         scatter_kws={"color": "g"},
     )
     ax.set_title("Scatter Hist")
-    data = plots.get_data(fig)
-    return render_template_string(
-        """
-        {% from 'plots/utils.html' import render_img %}
-        {{ render_img(data=data, alt_img='my_img') }}
-        """,
-        data=data,
-    )
-
-
-@app.route("/bar")
-def bar():
-    fig = Figure()
-    ax = fig.subplots()
-    countries = ["Argentina", "Brasil", "Colombia", "Chile"]
-    peoples = [14, 40, 16, 24]
-    ax = plots.bar(fig, countries, peoples)
-    ax.set_title("Bar Chart")
     data = plots.get_data(fig)
     return render_template_string(
         """

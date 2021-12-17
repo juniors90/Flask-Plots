@@ -9,8 +9,22 @@ Installation
     $ pip install flask-plots
 
 
+Initialization
+----------------
 
 To get started, the first step is to import and load the extension
+
+.. code-block:: python
+    
+    from flask import Flask
+    from flask_plots import Plots
+    
+    app = Flask(__name__)
+    plots = Plots(app)
+
+    # do something with app...
+
+with ``create_app()`` factory
 
 .. code-block:: python
 
@@ -55,12 +69,11 @@ Macros
 +---------------------------+----------------------------+--------------------------+
 
 How to use this macro? It's quite simple, just import them from the
-corresponding path and call them like any other macro:
+corresponding path and call them like this macro:
 
 .. code-block:: jinja
 
     {% from 'plots/utils.html' import render_img %}
+    {{ render_img(data, alt_img='my-image') }}
 
-    {{ render_img(data) }}
-
-Go to the :doc:`macros` page to see the detailed usage for these macros.
+Go to the :doc:`macros` page to see the detailed usage for this macros.

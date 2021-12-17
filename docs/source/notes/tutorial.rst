@@ -31,6 +31,36 @@ Next, create a virtual environment.
     $ virtualenv venv
 
 
+Once we have created our environment, we must tell the terminal that we want
+to make use of it and not the global Python environment of the system. Therefore:
+
+We will execute the following command if we are on Linux/Mac:
+
+.. code-block:: bash
+    
+    $ source env/bin/activate
+
+For Windows users:
+
+.. code-block:: bash
+    
+    $ env\Scripts\activate.bat
+
+We will know that the environment is active because the prompt
+begins with the word "(venv)", as the following image shows:
+
+.. code-block:: bash
+    
+    (venv) $
+
+To install Flask-Plots we will write the following command in the terminal:
+
+.. code-block:: bash
+    
+    (venv) $ pip install Flask-Plots
+
+Create a app.py file such tah conatin the followin sript:
+
 .. code-block:: python
     :emphasize-lines: 2, 8
 
@@ -38,26 +68,13 @@ Next, create a virtual environment.
     from flask_plots import Plots
     import matplotlib
     from matplotlib.figure import Figure
-    import nupy as np
+    import numpy as np
     
     app = Flask(__name__)
     plots = Plots(app)
 
     # routes
-
-    if __name__ == "__main__":
-        app.run(port=5000, debug=True)
-
-Basic
------
-
-This includes the basic plot types in Matplotlib_, usually :math:`y` versus :math:`x`.
-
-
-.. code-block:: python
-    :emphasize-lines: 8
-
-    @app.route("/bar")
+    @app.route("/")
     def bar():
         # Make data
         countries = ["Argentina", "Brasil", "Colombia", "Chile"]
@@ -75,6 +92,27 @@ This includes the basic plot types in Matplotlib_, usually :math:`y` versus :mat
                 data=data
             )
 
+    if __name__ == "__main__":
+        app.run(port=5000, debug=True)
+
+Assuming that the working directory contains this script:
+
+- Linux/Mac system:
+
+.. code-block:: bash
+    
+    (venv) $ FLASK_APP=app
+    (venv) $ flask run
+
+- Windows
+
+.. code-block:: bash
+    
+    (venv) $ set FLASK_APP=app.py
+    (venv) $ flask run    
+
+Then navigate to the url ``http://127.0.0.1:5000/``.
+You should see the *bar plot* rendered in ``png`` format.
 
 Arrays and Fields
 -----------------
@@ -213,8 +251,8 @@ Statistics
 .. code-block:: python
     :emphasize-lines: 11-21, 27, 30, 31
     
-    @app.route("/boxplot")
-    def boxplot():
+    @app.route("/errorbar")
+    def errorbar():
         # make data:
         np.random.seed(1)
         x = [2, 4, 6]
