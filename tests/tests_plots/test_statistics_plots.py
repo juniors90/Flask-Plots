@@ -39,7 +39,7 @@ class TestPlots:
         exp_ax.hist2d(x=self.x, y=self.y, cmap="inferno")
         exp_ax.set_title("Scatter Hist")
         exp_ax.set_xlabel("Labbel for X!")
-    
+
     @check_figures_equal(extensions=["png"])
     def test_scatter_hist2d(self, app, plots, fig_test, fig_ref):
         test_ax = fig_test.subplots()
@@ -50,7 +50,7 @@ class TestPlots:
                 y=self.y,
                 ax=test_ax,
                 hist2d_kws={"cmap": "inferno"},
-                scatter_kws={"color": "g"}
+                scatter_kws={"color": "g"},
             )
         test_ax.set_title("Scatter Hist")
         test_ax.set_xlabel("Labbel for X!")
