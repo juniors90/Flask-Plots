@@ -202,14 +202,26 @@ class Plots(object):
         ax.eventplot(positions, **eventplot_kws)
         return ax
 
+    def hist2d(self, fig, x, y, ax=None, hist2d_kws=None):
+        ax = fig.gca() if ax is None else ax
+        hist2d_kws = {} if hist2d_kws is None else hist2d_kws
+        ax.hist2d(x, y, **hist2d_kws)
+        return ax
+
+    def hexbin(self, fig, x, y, ax=None, hexbin_kws=None):
+        ax = fig.gca() if ax is None else ax
+        hexbin_kws = {} if hexbin_kws is None else hexbin_kws
+        ax.hexbin(x, y, **hexbin_kws)
+        return ax
+
     def scatter_hist2d(
-        self, fig, x, y, ax=None, hist_kws=None, scatter_kws=None
+        self, fig, x, y, ax=None, hist2d_kws=None, scatter_kws=None
     ):
         ax = fig.gca() if ax is None else ax
-        hist_kws = {} if hist_kws is None else hist_kws
+        hist2d_kws = {} if hist2d_kws is None else hist2d_kws
         scatter_kws = {} if scatter_kws is None else scatter_kws
-        hist_kws.setdefault("cmap", current_app.config["PLOTS_CMAP"])
-        ax.hist2d(x, y, **hist_kws)
+        hist2d_kws.setdefault("cmap", current_app.config["PLOTS_CMAP"])
+        ax.hist2d(x, y, **hist2d_kws)
         ax.scatter(x, y, **scatter_kws)
         return ax
 

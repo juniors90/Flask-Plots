@@ -22,17 +22,47 @@ class TestPlots:
     y = np.random.normal(size=100)
 
     @check_figures_equal(extensions=["png"])
+    def test_hist2d(self, app, plots, fig_test, fig_ref):
+        test_ax = fig_test.subplots()
+        with app.app_context():
+            plots.hist2d(
+                fig=fig_test,
+                x=self.x,
+                y=self.y,
+                ax=test_ax,
+                hist2d_kws={"cmap": "inferno"},
+            )
+        test_ax.set_title("Scatter Hist")
+        test_ax.set_xlabel("Labbel for X!")
+
+        exp_ax = fig_ref.subplots()
+        exp_ax.hist2d(x=self.x, y=self.y, cmap="inferno")
+        exp_ax.set_title("Scatter Hist")
+        exp_ax.set_xlabel("Labbel for X!")
+    
+    @check_figures_equal(extensions=["png"])
     def test_scatter_hist2d(self, app, plots, fig_test, fig_ref):
         test_ax = fig_test.subplots()
         with app.app_context():
-            plots.scatter_hist2d(fig=fig_test, x=self.x, y=self.y, ax=test_ax)
+            plots.scatter_hist2d(
+                fig=fig_test,
+                x=self.x,
+                y=self.y,
+                ax=test_ax,
+                hist2d_kws={"cmap": "inferno"},
+                scatter_kws={"color": "g"}
+            )
+        test_ax.set_title("Scatter Hist")
+        test_ax.set_xlabel("Labbel for X!")
 
         exp_ax = fig_ref.subplots()
-        exp_ax.hist2d(x=self.x, y=self.y, cmap="Greys")
-        exp_ax.scatter(self.x, self.y)
+        exp_ax.hist2d(x=self.x, y=self.y, cmap="inferno")
+        exp_ax.scatter(self.x, self.y, color="g")
+        exp_ax.set_title("Scatter Hist")
+        exp_ax.set_xlabel("Labbel for X!")
 
     @check_figures_equal(extensions=["png"])
-    def test_scatter_hist(self, app, plots, fig_test, fig_ref):
+    def test_hist(self, app, plots, fig_test, fig_ref):
         # make data
         np.random.seed(1)
         z = 4 + np.random.normal(0, 1.5, 200)
@@ -333,6 +363,30 @@ class TestPlots:
             yticks=np.arange(1, 8),
         )
         exp_ax.set_title("Bar Chart")
+
+    @check_figures_equal(extensions=["png"])
+    def test_hexbin(self, app, plots, fig_test, fig_ref):
+        # make data: correlated + noise
+        np.random.seed(1)
+        x = np.random.randn(5000)
+        y = 1.2 * x + np.random.randn(5000) / 3
+        # test plot:
+        test_ax = fig_test.subplots()
+        with app.app_context():
+            plots.hexbin(
+                fig=fig_test,
+                x=x,
+                y=y,
+                ax=test_ax,
+                hexbin_kws={"cmap": "inferno", "gridsize": 20},
+            )
+        test_ax.set(xlim=(-2, 2), ylim=(-3, 3))
+        test_ax.set_title("Scatter Hexbin Chart")
+        # expected plot
+        exp_ax = fig_ref.subplots()
+        exp_ax.hexbin(x, y, cmap="inferno", gridsize=20)
+        exp_ax.set(xlim=(-2, 2), ylim=(-3, 3))
+        exp_ax.set_title("Scatter Hexbin Chart")
 
     @check_figures_equal(extensions=["png"])
     def test_scatter_hexbin(self, app, plots, fig_test, fig_ref):

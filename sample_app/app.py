@@ -31,15 +31,93 @@ def index():
         fig,
         x=np.random.normal(size=100),
         y=np.random.normal(size=100),
-        hist_kws={"cmap": "inferno"},
+        hist2d_kws={"cmap": "inferno"},
         scatter_kws={"color": "g"},
     )
     ax.set_title("Scatter Hist")
-    ax.set_xlabel("Labbel for X!")
+    ax.set_xlabel("Label for X!")
     data = plots.get_data(fig)
     return render_template_string(
         """
-        <img src='data:image/png;base64,{{ data }}'>
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
+    )
+
+
+@app.route("/hist2d")
+def hist2d():
+    fig = Figure()
+    ax = fig.subplots()
+    ax = plots.hist2d(
+        fig,
+        x=np.random.normal(size=100),
+        y=np.random.normal(size=100),
+        hist2d_kws={"cmap": "inferno"},
+    )
+    ax.set_title("Hist2d Plot")
+    ax.set_xlabel("Label for X!")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
+    )
+
+
+@app.route("/hexbin")
+def hexbin():
+    # make data: correlated + noise
+    np.random.seed(1)
+    x = np.random.randn(5000)
+    y = 1.2 * x + np.random.randn(5000) / 3
+    # test plot:
+    fig = Figure()
+    ax = fig.subplots()
+    ax = plots.hexbin(
+        fig=fig,
+        x=x,
+        y=y,
+        hexbin_kws={"cmap": "inferno", "gridsize": 20},
+    )
+    ax.set(xlim=(-2, 2), ylim=(-3, 3))
+    ax.set_title("Hexbin Chart")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
+    )
+
+
+@app.route("/scatter-hexbin")
+def scatter_hexbin():
+    # make data: correlated + noise
+    np.random.seed(1)
+    x = np.random.randn(5000)
+    y = 1.2 * x + np.random.randn(5000) / 3
+    # test plot:
+    fig = Figure()
+    ax = fig.subplots()
+    ax = plots.scatter_hexbin(
+        fig=fig,
+        x=x,
+        y=y,
+        hexbin_kws={"cmap": "inferno", "gridsize": 20},
+        scatter_kws={"color": "g"},
+    )
+    ax.set(xlim=(-2, 2), ylim=(-3, 3))
+    ax.set_title("Scatter Hexbin Chart")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
         """,
         data=data,
     )
@@ -68,7 +146,11 @@ def hist():
     ax.set_title("Histogram Chart")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -108,7 +190,11 @@ def boxplot():
     ax.set_title("Boxplot Chart")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -137,7 +223,11 @@ def errorbar():
     ax.set_title("Errorbar Chart")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -172,7 +262,11 @@ def violinplot():
     ax.set_title("Violin Chart")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -203,7 +297,11 @@ def eventplot():
     ax.set_title("Event Chart")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -223,7 +321,11 @@ def two_axes():
     ax.set_title("Scatter Hist")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -237,7 +339,11 @@ def bar():
     ax.set_title("Bar Chart")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -265,7 +371,69 @@ def pie():
     ax.set_title("Pie Chart")
     data = plots.get_data(fig)
     return render_template_string(
-        "<img src='data:image/png;base64,{{ data }}'>", data=data
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
+    )
+
+
+@app.route("/quiver")
+def quiver():
+    # make data
+    x = np.linspace(-4, 4, 6)
+    y = np.linspace(-4, 4, 6)
+    X, Y = np.meshgrid(x, y)
+    U = X + Y
+    V = Y - X
+    fig = Figure()
+    ax = fig.subplots()
+    ax = plots.quiver(
+        fig,
+        X,
+        Y,
+        U,
+        V,
+        quiver_kws={
+            "color": "C0",
+            "angles": "xy",
+            "scale_units": "xy",
+            "scale": 5,
+            "width": 0.015,
+        },
+    )
+    ax.set_title("Quiver Chart")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
+    )
+
+
+@app.route("/streamplot")
+def stremplot():
+    # make a stream function:
+    X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+    Z = (1 - X / 2 + X ** 5 + Y ** 3) * np.exp(-(X ** 2) - Y ** 2)
+    # make U and V out of the streamfunction:
+    V = np.diff(Z[1:, :], axis=1)
+    U = -np.diff(Z[:, 1:], axis=0)
+    # plot:
+    fig = Figure()
+    ax = fig.subplots()
+    ax = plots.streamplot(fig, X[1:, 1:], Y[1:, 1:], U, V)
+    ax.set_title("Streamplot Chart")
+    data = plots.get_data(fig)
+    return render_template_string(
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
     )
 
 
@@ -278,7 +446,13 @@ def hello():
     ax.set_title("Linear Function")
     # Return data from temporary buffer.
     data = plots.get_data(fig)
-    return f"<img src='data:image/png;base64,{data}'/>"
+    return render_template_string(
+        """
+        {% from 'plots/utils.html' import render_img %}
+        {{ render_img(data=data, alt_img='my_img') }}
+        """,
+        data=data,
+    )
 
 
 @app.route("/hello2")

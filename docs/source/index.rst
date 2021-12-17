@@ -35,9 +35,21 @@ Welcome to Flask-Plots's documentation!
    notes/quickstart
    notes/tutorial
    notes/macros
-   notes/changelog
+
+The information on a specific function,
+class or method, you will find it here
+
+.. toctree::
+   :maxdepth: 3
+   :caption: API Reference:
    
    modules/modules
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Changelog
+   
+   notes/changelog
 
 
 
