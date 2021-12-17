@@ -76,10 +76,10 @@ class Plots(object):
         fig : matplotlib.Figure
             A instance of Figure Object.
 
-        format: str, default: "png"
+        format : str, default: "png"
             A extension type for the images.
 
-        decode: str, default: "ascii"
+        decode : str, default: "ascii"
             A buffer decode.
         """
         buf = io.BytesIO()
@@ -93,6 +93,9 @@ class Plots(object):
 
         Parameters
         ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
         x : (n,) array or sequence of (n,) arrays
             Input values, this takes either a single array or a sequence of
             arrays which are not required to be of the same length.
@@ -102,7 +105,6 @@ class Plots(object):
 
         hist_kwargs : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------
@@ -119,15 +121,18 @@ class Plots(object):
 
         Parameters
         ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
         x, y : float or array-like
             The data positions.
 
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        errorbar_kws: ``dict`` or ``None`` (optional)
+        errorbar_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
+
 
         Returns
         -------
@@ -146,6 +151,9 @@ class Plots(object):
 
         Parameters
         ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
         dataset : Array or a sequence of vectors.
             The input data.
 
@@ -158,7 +166,6 @@ class Plots(object):
 
         violinplot_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------
@@ -175,6 +182,9 @@ class Plots(object):
 
         Parameters
         ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
         positions : array-like or list of array-like
             A 1D array-like defines the positions of one sequence of events.
             Multiple groups of events may be passed as a list of array-likes.
@@ -188,9 +198,8 @@ class Plots(object):
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        eventplot_kws: ``dict`` or ``None`` (optional)
+        eventplot_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------
@@ -203,12 +212,56 @@ class Plots(object):
         return ax
 
     def hist2d(self, fig, x, y, ax=None, hist2d_kws=None):
+        """
+        Make a 2D histogram plot using Matplotlib.
+
+        Parameters
+        ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
+        x, y : array-like, shape (n, )
+            Input values
+
+        ax : matplotlib.Figure.Axis, (optional)
+            A matplotlib axis.
+
+        hist2d_kws : ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot.
+
+        Returns
+        -------
+        ax : matplotlib.Figure.Axis
+            A matplotlib axis.
+        """
         ax = fig.gca() if ax is None else ax
         hist2d_kws = {} if hist2d_kws is None else hist2d_kws
         ax.hist2d(x, y, **hist2d_kws)
         return ax
 
     def hexbin(self, fig, x, y, ax=None, hexbin_kws=None):
+        """
+        Make a 2D hexagonal binning plot of points *x*, *y* using Matplotlib.
+
+        Parameters
+        ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
+        x, y : array-like
+            The data positions. *x* and *y* must be of the same length.
+
+        ax : matplotlib.Figure.Axis, (optional)
+            A matplotlib axis.
+
+        hexbin_kws : ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot.
+
+        Returns
+        -------
+        ax : matplotlib.Figure.Axis
+            A matplotlib axis.
+        """
         ax = fig.gca() if ax is None else ax
         hexbin_kws = {} if hexbin_kws is None else hexbin_kws
         ax.hexbin(x, y, **hexbin_kws)
@@ -237,7 +290,8 @@ class Plots(object):
         return ax
 
     def bar(self, fig, x, bar_height=None, ax=None, bar_kws=None):
-        """Make a bar plot using Matplotlib.
+        """
+        Make a bar plot using Matplotlib.
 
         Parameters
         ----------
@@ -257,7 +311,6 @@ class Plots(object):
 
         bar_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------
@@ -288,9 +341,8 @@ class Plots(object):
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        bar_kws: ``dict`` or ``None`` (optional)
+        bar_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------
@@ -318,9 +370,8 @@ class Plots(object):
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        boxplot_kws: ``dict`` or ``None`` (optional)
+        boxplot_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------
@@ -359,7 +410,6 @@ class Plots(object):
 
         quiver_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------
@@ -393,9 +443,9 @@ class Plots(object):
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
-        streamplot_kws: ``dict`` or ``None`` (optional)
+        streamplot_kws : ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
+
         """
         ax = fig.gca() if ax is None else ax
         streamplot_kws = {} if streamplot_kws is None else streamplot_kws
@@ -442,7 +492,6 @@ class Plots(object):
 
         contourf_kws: ``dict`` or ``None`` (optional)
             The parameters to send to the data plot.
-            Only ``label`` and ``color`` can't be provided.
 
         Returns
         -------

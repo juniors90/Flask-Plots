@@ -328,10 +328,65 @@ Statistics
             )
 
 .. code-block:: python
-    :emphasize-lines: 5-15, 23, 26-27
+    :emphasize-lines: 6-11, 14, 17-18
+
+    @app.route("/hist2d")
+    def hist2d():
+        # plots:
+        fig = Figure()
+        ax = fig.subplots()
+        ax = plots.hist2d(
+            fig,
+            x=np.random.normal(size=100),
+            y=np.random.normal(size=100),
+            hist2d_kws={"cmap": "inferno"},
+        )
+        ax.set_title("Hist2d Plot")
+        ax.set_xlabel("Label for X!")
+        data = plots.get_data(fig)
+        return render_template_string(
+            """
+            {% from 'plots/utils.html' import render_img %}
+            {{ render_img(data=data, alt_img='my_img') }}
+            """,
+            data=data,
+        )
+
+.. code-block:: python
+    :emphasize-lines: 10-15, 18, 21, 22
+
+    @app.route("/hexbin")
+    def hexbin():
+        # make data: correlated + noise
+        np.random.seed(1)
+        x = np.random.randn(5000)
+        y = 1.2 * x + np.random.randn(5000) / 3
+        # plots:
+        fig = Figure()
+        ax = fig.subplots()
+        ax = plots.hexbin(
+            fig=fig,
+            x=x,
+            y=y,
+            hexbin_kws={"cmap": "inferno", "gridsize": 20},
+        )
+        ax.set(xlim=(-2, 2), ylim=(-3, 3))
+        ax.set_title("Hexbin Chart")
+        data = plots.get_data(fig)
+        return render_template_string(
+            """
+            {% from 'plots/utils.html' import render_img %}
+            {{ render_img(data=data, alt_img='my_img') }}
+            """,
+            data=data
+        )
+
+.. code-block:: python
+    :emphasize-lines: 6-16, 24, 27-28
 
     @app.route("/pie")
     def pie():
+        # plots:
         fig = Figure()
         ax = fig.subplots()
         ax = plots.pie(
