@@ -270,6 +270,31 @@ class Plots(object):
     def scatter_hist2d(
         self, fig, x, y, ax=None, hist2d_kws=None, scatter_kws=None
     ):
+        """
+        Make a 2D histogram plot using Matplotlib.
+
+        Parameters
+        ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
+        x, y : array-like, shape (n, )
+            Input values
+
+        ax : matplotlib.Figure.Axis, (optional)
+            A matplotlib axis.
+
+        hist2d_kws : ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot.
+
+        scatter_kws : ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot in term scatter method.
+
+        Returns
+        -------
+        ax : matplotlib.Figure.Axis
+            A matplotlib axis.
+        """
         ax = fig.gca() if ax is None else ax
         hist2d_kws = {} if hist2d_kws is None else hist2d_kws
         scatter_kws = {} if scatter_kws is None else scatter_kws
@@ -281,6 +306,31 @@ class Plots(object):
     def scatter_hexbin(
         self, fig, x, y, ax=None, hexbin_kws=None, scatter_kws=None
     ):
+        """
+        Make a 2D scatter-hexagonal binning plot of points *x*, *y*.
+
+        Parameters
+        ----------
+        fig : matplotlib.Figure
+            A instance of Figure Object.
+
+        x, y : array-like
+            The data positions. *x* and *y* must be of the same length.
+
+        ax : matplotlib.Figure.Axis, (optional)
+            A matplotlib axis.
+
+        hexbin_kws : ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot in term hexbin method.
+
+        scatter_kws : ``dict`` or ``None`` (optional)
+            The parameters to send to the data plot in term scatter method.
+
+        Returns
+        -------
+        ax : matplotlib.Figure.Axis
+            A matplotlib axis.
+        """
         ax = fig.gca() if ax is None else ax
         hexbin_kws = {} if hexbin_kws is None else hexbin_kws
         scatter_kws = {} if scatter_kws is None else scatter_kws
