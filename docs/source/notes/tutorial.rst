@@ -464,7 +464,6 @@ Support for two axes
 --------------------
 
 .. code-block:: python
-    :emphasize-lines: 6-16, 24, 27-28
 
     @app.route("/two-axes")
     def two_axes():
