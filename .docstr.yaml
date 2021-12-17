@@ -8,7 +8,7 @@
 paths:
   - flask_plots
 #badge: docs
-exclude: .*/test # regex
+exclude: .*/test .*/sample_app # regex
 verbose: 2 # int (0-3)
 skip_magic: True
 skip_file_doc: True
