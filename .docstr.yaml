@@ -6,9 +6,9 @@
 ##  - https://dev.to/epassaro/how-to-keep-track-of-docstring-coverage-of-python-packages-on-ci-41fc
 
 paths:
-  - flask_plots
+  - flask_plots/
 #badge: docs
-exclude: .*/test .*/sample_app # regex
+exclude: .*/tests/ .*/sample_app/ # regex
 verbose: 2 # int (0-3)
 skip_magic: True
 skip_file_doc: True
@@ -16,8 +16,8 @@ skip_init: True
 skip_class_def: False
 skip_private: True
 follow_links: True
-ignore_names_file: .*/test # regex
-#fail_under: 90
+# ignore_names_file: .*/tests/ # regex
+fail_under: 90 # int
 percentage_only: False
 #ignore_patterns: # Dict with key/value pairs of file-pattern/node-pattern
 #  .*: method_to_ignore_in_all_files

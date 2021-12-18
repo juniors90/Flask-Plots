@@ -4,8 +4,10 @@ import pathlib
 import sys
 
 from flask import Flask, render_template_string
+
 import matplotlib
 from matplotlib.figure import Figure
+
 import numpy as np
 
 matplotlib.use("Agg")
@@ -177,13 +179,13 @@ def hist():
 def boxplot():
     # make data:
     np.random.seed(10)
-    D = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
+    d = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
     # plot
     fig = Figure()
     ax = fig.subplots()
     ax = plots.boxplot(
         fig,
-        D,
+        d,
         boxplot_kws={
             "positions": [2, 4, 6],
             "widths": 1.5,
@@ -294,13 +296,13 @@ def eventplot():
     # make data:
     np.random.seed(1)
     x = [2, 4, 6]
-    D = np.random.gamma(4, size=(3, 50))
+    d = np.random.gamma(4, size=(3, 50))
     # plot:
     fig = Figure()
     ax = fig.subplots()
     ax = plots.eventplot(
         fig,
-        D,
+        d,
         eventplot_kws={
             "orientation": "vertical",
             "lineoffsets": x,
@@ -359,19 +361,19 @@ def pie():
 @app.route("/quiver")
 def quiver():
     # make data
-    x = np.linspace(-4, 4, 6)
-    y = np.linspace(-4, 4, 6)
-    X, Y = np.meshgrid(x, y)
-    U = X + Y
-    V = Y - X
+    x_data = np.linspace(-4, 4, 6)
+    y_data = np.linspace(-4, 4, 6)
+    x, y = np.meshgrid(x_data, y_data)
+    u = x + y
+    v = y - x
     fig = Figure()
     ax = fig.subplots()
     ax = plots.quiver(
         fig,
-        X,
-        Y,
-        U,
-        V,
+        x,
+        y,
+        u,
+        v,
         quiver_kws={
             "color": "C0",
             "angles": "xy",
@@ -394,15 +396,15 @@ def quiver():
 @app.route("/streamplot")
 def stremplot():
     # make a stream function:
-    X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
-    Z = (1 - X / 2 + X ** 5 + Y ** 3) * np.exp(-(X ** 2) - Y ** 2)
+    x, y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+    z = (1 - x / 2 + x ** 5 + y ** 3) * np.exp(-(x ** 2) - y ** 2)
     # make U and V out of the streamfunction:
-    V = np.diff(Z[1:, :], axis=1)
-    U = -np.diff(Z[:, 1:], axis=0)
+    v = np.diff(z[1:, :], axis=1)
+    u = -np.diff(z[:, 1:], axis=0)
     # plot:
     fig = Figure()
     ax = fig.subplots()
-    ax = plots.streamplot(fig, X[1:, 1:], Y[1:, 1:], U, V)
+    ax = plots.streamplot(fig, x[1:, 1:], y[1:, 1:], u, v)
     ax.set_title("Streamplot Chart")
     data = plots.get_data(fig)
     return render_template_string(

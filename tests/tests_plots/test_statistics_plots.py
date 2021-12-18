@@ -14,6 +14,7 @@
 # =====================================================================
 
 from matplotlib.testing.decorators import check_figures_equal
+
 import numpy as np
 
 
@@ -98,14 +99,14 @@ class TestPlots:
     def test_boxplot(self, app, plots, fig_test, fig_ref):
         # make data
         np.random.seed(10)
-        D = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
+        d = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
 
         # test plot:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.boxplot(
                 fig=fig_test,
-                x=D,
+                x=d,
                 ax=test_ax,
                 boxplot_kws={
                     "positions": [2, 4, 6],
@@ -134,7 +135,7 @@ class TestPlots:
         # expected plot:
         exp_ax = fig_ref.subplots()
         exp_ax.boxplot(
-            D,
+            d,
             positions=[2, 4, 6],
             widths=1.5,
             patch_artist=True,
@@ -254,13 +255,13 @@ class TestPlots:
         # make data:
         np.random.seed(1)
         x = [2, 4, 6]
-        D = np.random.gamma(4, size=(3, 50))
+        d = np.random.gamma(4, size=(3, 50))
         # plot:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.eventplot(
                 fig=fig_test,
-                positions=D,
+                positions=d,
                 ax=test_ax,
                 eventplot_kws={
                     "orientation": "vertical",
@@ -278,7 +279,7 @@ class TestPlots:
         # expected plot:
         exp_ax = fig_ref.subplots()
         exp_ax.eventplot(
-            D, orientation="vertical", lineoffsets=x, linewidth=0.75
+            d, orientation="vertical", lineoffsets=x, linewidth=0.75
         )
         exp_ax.set(
             xlim=(0, 8),
@@ -419,18 +420,18 @@ class TestPlots:
         # make data:
         x = np.linspace(-4, 4, 6)
         y = np.linspace(-4, 4, 6)
-        X, Y = np.meshgrid(x, y)
-        U = X + Y
-        V = Y - X
+        x, y = np.meshgrid(x, y)
+        u = x + y
+        v = y - x
         # test plot:
         test_ax = fig_test.subplots()
         with app.app_context():
             plots.quiver(
                 fig=fig_test,
-                X=X,
-                Y=Y,
-                U=U,
-                V=V,
+                x=x,
+                y=y,
+                u=u,
+                v=v,
                 ax=test_ax,
                 quiver_kws={
                     "color": "C0",
@@ -445,10 +446,10 @@ class TestPlots:
         # plot
         exp_ax = fig_ref.subplots()
         exp_ax.quiver(
-            X,
-            Y,
-            U,
-            V,
+            x,
+            y,
+            u,
+            v,
             color="C0",
             angles="xy",
             scale_units="xy",
@@ -461,34 +462,34 @@ class TestPlots:
     @check_figures_equal(extensions=["png"])
     def test_streamplot(self, app, plots, fig_test, fig_ref):
         # make a stream function:
-        X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
-        Z = (1 - X / 2 + X ** 5 + Y ** 3) * np.exp(-(X ** 2) - Y ** 2)
+        x, y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+        z = (1 - x / 2 + x ** 5 + y ** 3) * np.exp(-(x ** 2) - y ** 2)
         # make U and V out of the streamfunction:
-        V = np.diff(Z[1:, :], axis=1)
-        U = -np.diff(Z[:, 1:], axis=0)
+        v = np.diff(z[1:, :], axis=1)
+        u = -np.diff(z[:, 1:], axis=0)
         # test plot:
         test_ax = fig_test.subplots()
         with app.app_context():
-            plots.streamplot(fig=fig_test, X=X[1:, 1:], Y=Y[1:, 1:], U=U, V=V)
+            plots.streamplot(fig=fig_test, x=x[1:, 1:], y=y[1:, 1:], u=u, v=v)
         test_ax.set_title("Streamplot Chart")
         # expected plot:
         exp_ax = fig_ref.subplots()
-        exp_ax.streamplot(X[1:, 1:], Y[1:, 1:], U, V)
+        exp_ax.streamplot(x[1:, 1:], y[1:, 1:], u, v)
         exp_ax.set_title("Streamplot Chart")
 
     @check_figures_equal(extensions=["png"])
     def test_contourf(self, app, plots, fig_test, fig_ref):
         # make data
-        X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
-        Z = (1 - X / 2 + X ** 5 + Y ** 3) * np.exp(-(X ** 2) - Y ** 2)
-        levels = np.linspace(Z.min(), Z.max(), 7)
+        x, y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+        z = (1 - x / 2 + x ** 5 + y ** 3) * np.exp(-(x ** 2) - y ** 2)
+        levels = np.linspace(z.min(), z.max(), 7)
 
         # test plot:
         test_ax = fig_test.subplots()
         with app.app_context():
-            plots.contourf(fig=fig_test, X=X, Y=Y, Z=Z, levels=levels)
+            plots.contourf(fig=fig_test, x=x, y=y, z=z, levels=levels)
         test_ax.set_title("Contourf Chart")
         # expected plot:
         exp_ax = fig_ref.subplots()
-        exp_ax.contourf(X, Y, Z, levels=levels)
+        exp_ax.contourf(x, y, z, levels=levels)
         exp_ax.set_title("Contourf Chart")

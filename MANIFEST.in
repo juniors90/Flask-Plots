@@ -9,6 +9,7 @@ exclude .docstr.yaml
 exclude .readthedocs.yaml
 exclude pyproject.toml
 recursive-exclude tests *
+recursive-exclude requirements *
 recursive-exclude sample_app *
 recursive-exclude docs *
 recursive-exclude res *

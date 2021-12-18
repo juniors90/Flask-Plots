@@ -15,6 +15,7 @@
 
 
 from flask import current_app
+
 from matplotlib.figure import Figure
 
 import pytest as pt

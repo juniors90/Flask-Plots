@@ -7,9 +7,11 @@
 # License: MIT
 # Full Text: https://github.com/juniors90/Flask-SemanticUI/blob/master/LICENSE
 
-import flask
-import pytest as pt
 import typing as t
+
+import flask
+
+import pytest as pt
 
 
 if t.TYPE_CHECKING:

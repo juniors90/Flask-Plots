@@ -26,8 +26,9 @@ Implementation of Matplotlib in Flask.
 # IMPORTS
 # =============================================================================
 
-import io
 import base64
+import io
+
 from flask import Blueprint, current_app
 
 
@@ -70,7 +71,7 @@ class Plots(object):
         app.jinja_env.globals["raise"] = raise_helper
         app.jinja_env.add_extension("jinja2.ext.do")
 
-    def get_data(self, fig, format="png", decode="ascii"):
+    def get_data(self, fig, fmt="png", decode="ascii"):
         """
         Create a data for embed the result in the html output.
 
@@ -86,7 +87,7 @@ class Plots(object):
             A buffer decode.
         """
         buf = io.BytesIO()
-        fig.savefig(buf, format=format)
+        fig.savefig(buf, format=fmt)
         data = base64.b64encode(buf.getbuffer()).decode(decode)
         return data
 
@@ -442,7 +443,7 @@ class Plots(object):
         ax.boxplot(x, **boxplot_kws)
         return ax
 
-    def quiver(self, fig, X, Y, U, V, ax=None, quiver_kws=None):
+    def quiver(self, fig, x, y, u, v, ax=None, quiver_kws=None):
         """
         Plot a 2D field of arrows using matplotlib.
 
@@ -451,19 +452,19 @@ class Plots(object):
         fig : matplotlib.Figure
             A instance of Figure Object.
 
-        X, Y : 1D or 2D array-like, optional
+        x, y : 1D or 2D array-like, optional
             The x and y coordinates of the arrow locations.
             If not given, they will be generated as a uniform integer meshgrid
-            based on the dimensions of *U* and *V*.
-            If *X* and *Y* are 1D but *U*, *V* are 2D, *X*, *Y* are expanded
-            to 2D using ``X, Y = np.meshgrid(X, Y)``. In this case ``len(X)``
-            and ``len(Y)`` must match the column and row dimensions of
-            *U* and *V*.
-        U, V : 1D or 2D array-like
+            based on the dimensions of *u* and *v*.
+            If *x* and *y* are 1D but *u*, *v* are 2D, *x*, *y* are expanded
+            to 2D using ``x, y = np.meshgrid(x, y)``. In this case ``len(x)``
+            and ``len(y)`` must match the column and row dimensions of
+            *u* and *v*.
+        u, v : 1D or 2D array-like
             The x and y direction components of the arrow vectors.
             They must have the same number of elements, matching the
-            number of arrow locations. *U* and *V* may be masked. Only
-            locations unmasked in *U*, *V*, and *C* will be drawn.
+            number of arrow locations. *u* and *v* may be masked. Only
+            locations unmasked in *u*, *v*, and *C* will be drawn.
         ax : matplotlib.Figure.Axis, (optional)
             A matplotlib axis.
 
@@ -477,10 +478,10 @@ class Plots(object):
         """
         ax = fig.gca() if ax is None else ax
         quiver_kws = {} if quiver_kws is None else quiver_kws
-        ax.quiver(X, Y, U, V, **quiver_kws)
+        ax.quiver(x, y, u, v, **quiver_kws)
         return ax
 
-    def streamplot(self, fig, X, Y, U, V, ax=None, streamplot_kws=None):
+    def streamplot(self, fig, x, y, u, v, ax=None, streamplot_kws=None):
         """
         Draw streamlines of a vector flow using matplotlib.
 
@@ -508,10 +509,10 @@ class Plots(object):
         """
         ax = fig.gca() if ax is None else ax
         streamplot_kws = {} if streamplot_kws is None else streamplot_kws
-        ax.streamplot(X, Y, U, V, **streamplot_kws)
+        ax.streamplot(x, y, u, v, **streamplot_kws)
         return ax
 
-    def contourf(self, fig, X, Y, Z, levels, ax=None, contourf_kws=None):
+    def contourf(self, fig, x, y, z, levels, ax=None, contourf_kws=None):
         """
         Plot contour lines using matplotlib.
 
@@ -520,21 +521,18 @@ class Plots(object):
         fig : matplotlib.Figure
             A instance of Figure Object.
 
-        X, Y : array-like, optional
+        x, y : array-like, optional
             The coordinates of the values in *Z*.
 
-            *X* and *Y* must both be 2D with the same shape as *Z* (e.g.
+            *x* and *y* must both be 2D with the same shape as *z* (e.g.
             created via `numpy.meshgrid`), or they must both be 1-D such
-            that ``len(X) == N`` is the number of columns in *Z* and
-            ``len(Y) == M`` is the number of rows in *Z*.
+            that ``len(x) == N`` is the number of columns in *z* and
+            ``len(y) == M`` is the number of rows in *z*.
 
             *X* and *Y* must both be ordered monotonically.
 
             If not given, they are assumed to be integer indices, i.e.
-            ``X = range(N)``, ``Y = range(M)``.
-
-        M, N : array-like
-            The height values over which the contour is drawn.
+            ``x = range(N)``, ``y = range(M)``.
 
         levels : int or array-like, optional
             Determines the number and positions of the contour lines / regions.
@@ -559,5 +557,5 @@ class Plots(object):
         """
         ax = fig.gca() if ax is None else ax
         contourf_kws = {} if contourf_kws is None else contourf_kws
-        ax.contourf(X, Y, Z, levels, **contourf_kws)
+        ax.contourf(x, y, z, levels, **contourf_kws)
         return ax

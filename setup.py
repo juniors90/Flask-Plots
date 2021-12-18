@@ -54,7 +54,7 @@ funding = "https://paypal.me/juniors90"
 setup(
     name="Flask-Plots",
     version=VERSION,
-    description="Implementation of Plots in Flask",
+    description="Implementation of Matplotlib in Flask",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
     author="Ferreira Juan David",

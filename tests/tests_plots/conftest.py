@@ -9,9 +9,9 @@
 # Full Text:
 #           https://github.com/juniors90/Flask-Plots/blob/master/LICENSE
 
-import pytest as pt
-
 from flask_plots import Plots
+
+import pytest as pt
 
 
 @pt.fixture(autouse=True)
