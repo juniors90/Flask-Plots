@@ -1,4 +1,4 @@
-# Flask-Plots (Building)
+# Flask-Plots
 
 [![Build status](https://github.com/juniors90/Flask-Plots/actions/workflows/CI.yml/badge.svg)](https://github.com/juniors90/Flask-Plots/actions)
 [![codecov](https://codecov.io/gh/juniors90/Flask-Plots/branch/main/graph/badge.svg?token=3DSLEQIE8A)](https://codecov.io/gh/juniors90/Flask-Plots)
