@@ -31,8 +31,9 @@ import base64
 from flask import Blueprint, current_app
 
 
-# docstr-coverage:excused `raise helper for jinja template`
+# docstr-coverage:excused ``
 def raise_helper(message):  # pragma: no cover
+    """Handle for raise in jinja templates."""
     raise RuntimeError(message)
 
 
@@ -50,6 +51,7 @@ class Plots(object):
             self.init_app(app)
 
     def init_app(self, app):
+        """Sample factory function for initialize the extension."""
         app.config.setdefault("PLOTS_CMAP", "Greys")
         app.config.setdefault("STATIC_FOLDER", "plots")
         app.config.setdefault("BAR_HEIGHT", 50)
@@ -90,7 +92,8 @@ class Plots(object):
 
     # Statistics plots: Plots for statistical analysis.
     def hist(self, fig, x, ax=None, hist_kws=None):
-        """Plot a histogram using Matplotlib.
+        """
+        Plot a histogram using Matplotlib.
 
         Parameters
         ----------
@@ -118,7 +121,8 @@ class Plots(object):
         return ax
 
     def errorbar(self, fig, x, y, ax=None, errorbar_kws=None):
-        """Plot y versus x as lines and/or markers with attached errorbars.
+        """
+        Plot y versus x as lines and/or markers with attached errorbars.
 
         Parameters
         ----------
@@ -148,7 +152,8 @@ class Plots(object):
     def violinplot(
         self, fig, dataset, positions, ax=None, violinplot_kws=None
     ):
-        """Make a violin plot using Matlotlib.
+        """
+        Make a violin plot using Matlotlib.
 
         Parameters
         ----------
@@ -179,7 +184,8 @@ class Plots(object):
         return vp
 
     def eventplot(self, fig, positions, ax=None, eventplot_kws=None):
-        """Plot identical parallel lines at the given positions.
+        """
+        Plot identical parallel lines at the given positions.
 
         Parameters
         ----------
@@ -379,7 +385,8 @@ class Plots(object):
         return ax
 
     def pie(self, fig, x, ax=None, pie_kws=None):
-        """Make a pie plot using Matplotlib.
+        """
+        Make a pie plot using Matplotlib.
 
         Parameters
         ----------
@@ -406,7 +413,8 @@ class Plots(object):
         return ax
 
     def boxplot(self, fig, x, ax=None, boxplot_kws=None):
-        """Draw a box and whisker plot using MAtplotlib.
+        """
+        Draw a box and whisker plot using MAtplotlib.
 
         Parameters
         ----------
