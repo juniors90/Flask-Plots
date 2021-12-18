@@ -32,7 +32,6 @@ import io
 from flask import Blueprint, current_app
 
 
-# docstr-coverage:excused ``
 def raise_helper(message):  # pragma: no cover
     """Handle for raise in jinja templates."""
     raise RuntimeError(message)
@@ -460,6 +459,7 @@ class Plots(object):
             to 2D using ``x, y = np.meshgrid(x, y)``. In this case ``len(x)``
             and ``len(y)`` must match the column and row dimensions of
             *u* and *v*.
+
         u, v : 1D or 2D array-like
             The x and y direction components of the arrow vectors.
             They must have the same number of elements, matching the
@@ -522,7 +522,7 @@ class Plots(object):
             A instance of Figure Object.
 
         x, y : array-like, optional
-            The coordinates of the values in *Z*.
+            The coordinates of the values in *z*.
 
             *x* and *y* must both be 2D with the same shape as *z* (e.g.
             created via `numpy.meshgrid`), or they must both be 1-D such

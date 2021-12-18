@@ -1,4 +1,0 @@
-pytest>=6.2.5
-flask>=2.0.2
-matplotlib==3.5.0
-numpy>=1.21.4
