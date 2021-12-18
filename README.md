@@ -36,9 +36,51 @@ For development, clone the [official github repository](https://github.com/https
     $ git clone git@github.com:juniors90/Flask-Plots.git
     $ cd Flask-Plots
     $ python3 -m venv venv
-    $ . venv/bin/activate
-    $ pip install -r requirements/dev.txt
+    $ source venv/bin/activate
+    (venv) $ pip install -r requirements/dev.txt
 ```
+
+## Quick start
+
+With Flask-Plots you can instance the ``Plots`` object and document your endpoints.
+
+
+```python
+    from flask import Flask, render_template_string
+    from flask_plots import Plots
+    import matplotlib
+    from matplotlib.figure import Figure
+    import numpy as np
+    
+    app = Flask(__name__)
+    plots = Plots(app)
+
+    # routes
+    @app.route("/")
+    def bar():
+        # Make data:
+        countries = ["Argentina", "Brasil", "Colombia", "Chile"]
+        peoples = [14, 40, 16, 24]
+        # Plot:
+        fig = Figure()
+        ax = fig.subplots()
+        ax = plots.bar(fig, countries, peoples)
+        ax.set_title("Bar Chart")
+        data = plots.get_data(fig)
+        return render_template_string(
+                """
+                {% from 'plots/utils.html' import render_img %}
+                {{ render_img(data=data, alt_img='my_img') }}
+                """,
+                data=data
+            )
+
+    if __name__ == "__main__":
+        app.run(port=5000, debug=True)
+```
+
+
+
 
 ## Authors
 
