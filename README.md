@@ -79,7 +79,12 @@ With Flask-Plots you can instance the ``Plots`` object and document your endpoin
         app.run(port=5000, debug=True)
 ```
 
+## Links
 
+- [Documentation](https://flask-plots.readthedocs.io)
+- [Example Application](https://github.com/juniors90/Flask-Plots/tree/main/sample_app)
+- [PyPI Releases](https://pypi.org/project/Flask-Plots/)
+- [Changelog](https://github.com/juniors90/Flask-Plots/blob/main/CHANGELOG.rst)
 
 
 ## Authors
