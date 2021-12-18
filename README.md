@@ -37,7 +37,7 @@ For development, clone the [official github repository](https://github.com/https
     $ cd Flask-Plots
     $ python3 -m venv venv
     $ . venv/bin/activate
-    $ pip install -e .[dev]
+    $ pip install -r requirements/dev.txt
 ```
 
 ## Authors

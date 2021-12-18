@@ -17,7 +17,6 @@
 # IMPORTS
 # ======================================================================
 
-import io
 import os
 import pathlib
 
@@ -43,23 +42,6 @@ with open("README.md") as fp:
     LONG_DESCRIPTION = fp.read()
 
 
-def pip(filename):
-    """Parse pip reqs file and transform it to setuptools requirements."""
-    requirements = []
-    for line in io.open(
-        os.path.join("requirements", "{0}.txt".format(filename))
-    ):
-        line = line.strip()
-        if not line or "://" in line or line.startswith("#"):
-            continue
-        requirements.append(line)
-    return requirements
-
-
-doc_require = pip("docs")
-tests_require = pip("tests")
-dev_require = tests_require + pip("dev")
-
 source = "https://github.com/juniors90/Flask-Plots"
 tracker = "https://github.com/juniors90/Flask-Plots/issues"
 donate = "https://www.paypal.com/donate?hosted_button_id=LFAQ7E7TJ4HSY"
@@ -84,11 +66,6 @@ setup(
     platforms="any",
     license="The MIT License",
     install_requires=REQUIREMENTS,
-    extras_require={
-        "test": tests_require,
-        "doc": doc_require,
-        "dev": dev_require,
-    },
     keywords=["Flask", "Matplotlib", "Data Visualisation"],
     project_urls={
         "Source": source,
