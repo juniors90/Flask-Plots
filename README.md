@@ -30,7 +30,7 @@ You can install via pip:
     $> pip install Flask-Plots
 ```
    
-For development, clone the [official github repository](https://github.com/juniors90/Flask-Plots>) instead and use:
+For development, clone the [official github repository](https://github.com/juniors90/Flask-Plots) instead and use:
 
 ```cmd
     $ git clone git@github.com:juniors90/Flask-Plots.git
