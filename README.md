@@ -27,7 +27,7 @@ Python 3.8+
 You can install via pip:
 
 ```cmd
-    $> pip install pycellid
+    $> pip install Flask-Plots
 ```
    
 For development, clone the [official github repository](https://github.com/https://github.com/pyCellID/pyCellID>) instead and use:
