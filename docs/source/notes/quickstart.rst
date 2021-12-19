@@ -31,11 +31,13 @@ with ``create_app()`` factory
     from flask import Flask
     from flask_plots import Plots
 
+    plots = Plots()
+    
     def create_app():
         app = Flask(__name__)
-        Plots(app)
+        plots.init_app(app)
         return app
-
+        
     app = create_app()
 
     # do something with app...
@@ -44,7 +46,6 @@ Tutorial
 --------
 
 You can see :doc:`tutorial`.
-
 
 Sample Application
 ------------------
@@ -86,7 +87,15 @@ corresponding path and call them like this macro:
 
 Go to the :doc:`macros` page to see the detailed usage for this macros.
 
-  
+License
+-------
+
+``Flask-Plots`` is free software you can redistribute it and/or modify it
+under the terms of the MIT License. For more information, you can see the
+`LICENSE <https://github.com/juniors90/Flask-Plots/blob/main/LICENSE>`_ file
+for details.
+
+
 .. raw:: html
 
     <form action="https://www.paypal.com/donate" method="post" target="_top">
