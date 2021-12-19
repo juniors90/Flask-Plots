@@ -100,9 +100,12 @@ the (E-mail: juandavid9a0@gmail.com).
 
 ## Acknowledgment
 
-Thank you to Juan B. Cabral, and Martin Chalela for his teachings during [Curso doctoral FAMAF: Diseño de software para cómputo científico](https://github.com/leliel12/diseno_sci_sfw), from which this library is based.
+Thank you to Juan B. Cabral, and Martin Chalela for his teachings during [Curso doctoral FAMAF: Diseño de software para cómputo científico](https://github.com/leliel12/diseno_sci_sfw),
+from which this library is based.
 
 ## License
 
 `Flask-Plots` is free software you can redistribute it and/or modify it
-under the terms of the MIT License. For more information, you can see the [LICENSE](https://github.com/juniors90/Flask-Plots/blob/main/LICENSE) file for details.
+under the terms of the MIT License. For more information, you can see the
+[LICENSE](https://github.com/juniors90/Flask-Plots/blob/main/LICENSE) file
+for details.

@@ -486,5 +486,4 @@ Donate
 
 -  `link to donate <https://www.paypal.com/donate/?hosted_button_id=LFAQ7E7TJ4HSY>`_
 
-
 .. _Matplotlib: https://matplotlib.org/devdocs/index.html
