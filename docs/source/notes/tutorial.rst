@@ -20,8 +20,8 @@ Create a new directory in your base directory and then navigate into it
 
 .. code-block:: bash
     
-    $ mkdir backend
-    $ cd backend
+    $ mkdir mi_project
+    $ cd my_project
 
 Next, create a virtual environment.
 
@@ -68,11 +68,9 @@ One way to have the latest developments is by running:
 Create a ``app.py`` file such tah conatin the followin script:
 
 .. code-block:: python
-    :emphasize-lines: 2, 8
 
     from flask import Flask, render_template_string
     from flask_plots import Plots
-    import matplotlib
     from matplotlib.figure import Figure
     import numpy as np
     
@@ -82,7 +80,7 @@ Create a ``app.py`` file such tah conatin the followin script:
     # routes
     @app.route("/")
     def bar():
-        # Make data
+        # make data
         countries = ["Argentina", "Brasil", "Colombia", "Chile"]
         peoples = [14, 40, 16, 24]
         fig = Figure()
@@ -126,17 +124,16 @@ Arrays and Fields
 Plotting for arrays of data ``Z(x, y)`` and fields ``U(x, y)``, ``V(x, y)`` using Matplotlib_.
 
 .. code-block:: python
-    :emphasize-lines: 9
 
     @app.route("/contourf")
     def contourf():
         # make data
-        X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
-        Z = (1 - X / 2 + X ** 5 + Y ** 3) * np.exp(-(X ** 2) - Y ** 2)
-        levels = np.linspace(Z.min(), Z.max(), 7)
+        x, y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+        z = (1 - x / 2 + x ** 5 + y ** 3) * np.exp(-(x ** 2) - y ** 2)
+        levels = np.linspace(z.min(), z.max(), 7)
         fig = Figure()
         ax = fig.subplots()
-        ax = plots.contourf(fig=fig_test, X=X, Y=Y, Z=Z, levels=levels)
+        ax = plots.contourf(fig=fig, x=x, y=y, z=z, levels=levels)
         ax.set_title("Contourf Chart")
         data = plots.get_data(fig)
         return render_template_string(
@@ -149,20 +146,19 @@ Plotting for arrays of data ``Z(x, y)`` and fields ``U(x, y)``, ``V(x, y)`` usin
 
 
 .. code-block:: python
-    :emphasize-lines: 12-19, 21, 24-25
 
     @app.route("/quiver")
     def quiver():
         # make data
-        x = np.linspace(-4, 4, 6)
-        y = np.linspace(-4, 4, 6)
-        X, Y = np.meshgrid(x, y)
-        U = X + Y
-        V = Y - X
+        x_data = np.linspace(-4, 4, 6)
+        y_data = np.linspace(-4, 4, 6)
+        x, y = np.meshgrid(x_data, y_data)
+        u = x + y
+        v = y - x
         # plots:
         fig = Figure()
         ax = fig.subplots()
-        ax = plots.quiver(fig, X, Y, U, V, quiver_kws={
+        ax = plots.quiver(fig, x, y, u, v, quiver_kws={
                     'color':'C0',
                     'angles':'xy',
                     'scale_units':'xy',
@@ -181,20 +177,19 @@ Plotting for arrays of data ``Z(x, y)`` and fields ``U(x, y)``, ``V(x, y)`` usin
             )
 
 .. code-block:: python
-    :emphasize-lines: 12, 14, 17-18
 
     @app.route("/streamplot")
     def stremplot():
         # make a stream function:
-        X, Y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
-        Z = (1 - X/2 + X**5 + Y**3) * np.exp(-X**2 - Y**2)
+        x, y = np.meshgrid(np.linspace(-3, 3, 256), np.linspace(-3, 3, 256))
+        z = (1 - x/2 + x**5 + y**3) * np.exp(-x**2 - y**2)
         # make U and V out of the streamfunction:
-        V = np.diff(Z[1:, :], axis=1)
-        U = -np.diff(Z[:, 1:], axis=0)
+        v = np.diff(z[1:, :], axis=1)
+        u = -np.diff(z[:, 1:], axis=0)
         # plot:
         fig = Figure()
         ax = fig.subplots()
-        ax = plots.streamplot(fig, X[1:, 1:], Y[1:, 1:], U, V)
+        ax = plots.streamplot(fig, x[1:, 1:], y[1:, 1:], u, v)
         ax.set_title("Streamplot Chart")
         data = plots.get_data(fig)
         return render_template_string(
@@ -209,19 +204,18 @@ Statistics
 ----------
 
 .. code-block:: python
-    :emphasize-lines: 9-27, 35, 38-39
 
     @app.route("/boxplot")
     def boxplot():
         # make data:
         np.random.seed(10)
-        D = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
+        d = np.random.normal((3, 5, 4), (1.25, 1.00, 1.25), (100, 3))
         # plot
         fig = Figure()
         ax = fig.subplots()
         ax = plots.boxplot(
             fig,
-            D,
+            d,
             boxplot_kws={
                 "positions": [2, 4, 6],
                 "widths": 1.5,
@@ -255,33 +249,33 @@ Statistics
             )
 
 .. code-block:: python
-    :emphasize-lines: 11-21, 27, 30, 31
     
     @app.route("/errorbar")
     def errorbar():
-        # make data:
+        # make data
         np.random.seed(1)
         x = [2, 4, 6]
         y = [3.6, 5, 4.2]
         yerr = [0.9, 1.2, 0.5]
-        # plot
+        # Plot
         fig = Figure()
         ax = fig.subplots()
         ax = plots.errorbar(
-                fig,
-                x,
-                y,
-                yerr,
-                errorbar_kws={
-                    "fmt":'o',
-                    "linewidth":2,
-                    "capsize":6
-                }
+            fig,
+            x=x,
+            y=y,
+            errorbar_kws={
+                "yerr": yerr,
+                "fmt": "o",
+                "linewidth": 2,
+                "capsize": 6},
             )
-        ax.set(xlim=(0, 8),
-               xticks=np.arange(1, 8),
-               ylim=(0, 8),
-               yticks=np.arange(1, 8))
+        ax.set(
+            xlim=(0, 8),
+            xticks=np.arange(1, 8),
+            ylim=(0, 8),
+            yticks=np.arange(1, 8),
+        )
         ax.set_title("Errorbar Chart")
         data = plots.get_data(fig)
         return render_template_string(
@@ -293,7 +287,6 @@ Statistics
             )
 
 .. code-block:: python
-    :emphasize-lines: 9-19, 30, 33-34
 
     @app.route("/violinplot")
     def violinplot():
@@ -335,20 +328,19 @@ Statistics
 
 
 .. code-block:: python
-    :emphasize-lines: 10-18, 26, 29-30
 
     @app.route("/eventplot")
     def eventplot():
         # make data:
         np.random.seed(1)
         x = [2, 4, 6]
-        D = np.random.gamma(4, size=(3, 50))
+        d = np.random.gamma(4, size=(3, 50))
         # plot:
         fig = Figure()
         ax = fig.subplots()
         ax = plots.eventplot(
             fig,
-            D,
+            d,
             eventplot_kws={
                 "orientation": "vertical",
                 "lineoffsets": x,
@@ -372,7 +364,6 @@ Statistics
             )
 
 .. code-block:: python
-    :emphasize-lines: 6-11, 14, 17-18
 
     @app.route("/hist2d")
     def hist2d():
@@ -386,7 +377,7 @@ Statistics
             hist2d_kws={"cmap": "inferno"},
         )
         ax.set_title("Hist2d Plot")
-        ax.set_xlabel("Label for X!")
+        ax.set_xlabel("Label for x")
         data = plots.get_data(fig)
         return render_template_string(
             """
@@ -397,7 +388,6 @@ Statistics
         )
 
 .. code-block:: python
-    :emphasize-lines: 10-15, 18, 21, 22
 
     @app.route("/hexbin")
     def hexbin():
@@ -426,7 +416,6 @@ Statistics
         )
 
 .. code-block:: python
-    :emphasize-lines: 6-16, 24, 27-28
 
     @app.route("/pie")
     def pie():
@@ -491,5 +480,11 @@ Support for two axes
             """,
             data=data,
         )
+
+Donate
+------
+
+-  `link to donate <https://www.paypal.com/donate/?hosted_button_id=LFAQ7E7TJ4HSY>`_
+
 
 .. _Matplotlib: https://matplotlib.org/devdocs/index.html

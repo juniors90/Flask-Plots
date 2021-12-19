@@ -36,7 +36,15 @@ with ``create_app()`` factory
         Plots(app)
         return app
 
+    app = create_app()
+
     # do something with app...
+
+Tutorial
+--------
+
+You can see :doc:`tutorial`.
+
 
 Sample Application
 ------------------
@@ -65,7 +73,7 @@ Macros
 +---------------------------+----------------------------+--------------------------+
 | Macro                     | Templates Path             | Description              |
 +===========================+============================+==========================+
-| render_img()              | plots/utils.html           | Render a img tag HTML    |
+| render_img()              | plots/utils.html           | Render a img HTML tag.   |
 +---------------------------+----------------------------+--------------------------+
 
 How to use this macro? It's quite simple, just import them from the
@@ -77,3 +85,25 @@ corresponding path and call them like this macro:
     {{ render_img(data, alt_img='my-image') }}
 
 Go to the :doc:`macros` page to see the detailed usage for this macros.
+
+  
+.. raw:: html
+
+    <form action="https://www.paypal.com/donate" method="post" target="_top">
+      <input type="hidden" name="hosted_button_id" value="LFAQ7E7TJ4HSY" />
+      <input
+        type="image"
+        src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif"
+        border="0"
+        name="submit"
+        title="PayPal - The safer, easier way to pay online!"
+        alt="Donate with PayPal button"
+      />
+      <img
+        alt=""
+        border="0"
+        src="https://www.paypal.com/en_AR/i/scr/pixel.gif"
+        width="1"
+        height="1"
+      />
+    </form>
